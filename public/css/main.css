@@ -64,16 +64,9 @@ header {
   text-transform: uppercase;
 }
 
-.navbar-brand {
-  padding: 5px 0;
-}
+.card-content {
 
-form {
-  text-align: left;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-#exampleInputEmail1.red-border {
-  border: 2px solid red;
+font-family: 'Roboto', sans-serif;
+font-size: 15px;
+color: rgba(51, 51, 51, 1);
 }
