@@ -11,6 +11,7 @@
     var vm = this;
     $log.debug("SubmitController Loaded.");
     vm.toggleValue = true;
+    vm.conflict;
     const TOKEN_KEY = "moment_token"
 
     //BINDINGS
@@ -40,6 +41,7 @@
         $log.debug("success!", res.data)
       }, function(err) {
         $log.debug(err)
+        if (err.status === 409) vm.conflict = "emailError";
       });
     };
 
@@ -55,7 +57,8 @@
         $log.debug("success!", res.data);
         $window.localStorage.setItem(TOKEN_KEY, res.data.token)
       }, function(err) {
-        $log.debug(err)
+        $log.debug(err);
+        if (err.status === 403) vm.conflict = "passwordError";
       });
     }
 

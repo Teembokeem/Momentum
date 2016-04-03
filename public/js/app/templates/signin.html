@@ -13,6 +13,7 @@
                 <input ng-model="vm.testExistingUser.password" id="password" type="password" class="validate">
                 <label for="password" data-error="wrong" data-success="right">Password</label>
               </div>
+              <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign Up Here</u></label></span>
               <div class="col s12 btn-holder">
                 <button class="btn grey darken-4" type="submit">S U B M I T</button>
               </div>
@@ -47,6 +48,7 @@
                 <input ng-model="vm.testNewUser.password_confirmation"  id="password_cofirmation" type="password" class="validate">
                 <label for="password_cofirmation" data-error="wrong" data-success="right">Confirm Your Password</label>
               </div>
+              <span  ng-show="vm.conflict ==='emailError'" ><label  class="conflict">"{{vm.testNewUser.email}}" already exists in the database, Please enter a new email, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign In Here</u></label></span>
               <div class="col s12 btn-holder">
                 <button class="btn grey darken-4" type="submit">S U B M I T</button>
               </div>
