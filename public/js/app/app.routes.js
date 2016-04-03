@@ -13,6 +13,10 @@
         url: "/",
         templateUrl: "js/app/templates/landing.html"
       })
+      .state("signin", {
+        url: "/signin",
+        templateUrl: "js/app/templates/signin.html"
+      });
 
     $urlRouterProvider.otherwise("/");
   }
