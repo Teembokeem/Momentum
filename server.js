@@ -40,11 +40,15 @@ app.use(logger('dev'));
 
 // Static routing layer.
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse and debug requests.
 app.use(bodyParser.json());
 app.use(debugReq);
+
+// Validate content-type.
+app.use(validateContentType);
 
 // Our routes.
 app.use('/api', routes);
@@ -85,6 +89,21 @@ function debugReq(req, res, next) {
   next();
 }
 
+
+function validateContentType(req, res, next) {
+  var methods = ['PUT', 'PATCH', 'POST'];
+  if (                                    // If the request is
+    methods.indexOf(req.method) !== -1 && // one of PUT, PATCH or POST, and
+    Object.keys(req.body).length !== 0 && // has a body that is not empty, and
+    !req.is('json')                       // does not have an application/json
+  ) {                                     // Content-Type header, then …
+    var message = 'Content-Type header must be application/json.';
+    res.status(400).json(message);
+  } else {
+    next();
+  }
+}
+
 function allowCors(req, res, next) {
   res.header('Access-Control-Allow-Origin',  '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -97,6 +116,7 @@ function allowCors(req, res, next) {
     next();
   }
 }
+
 
 function addFailedAuthHeader(err, req, res, next) {
   var header = {'WWW-Authenticate': 'Bearer'};

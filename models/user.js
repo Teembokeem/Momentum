@@ -6,6 +6,7 @@ var userSchema = new mongoose.Schema({
   name:  { type: String, required: true }
 });
 
+// Add bcrypt hashing to model (works on a password field)!
 userSchema.plugin(require('mongoose-bcrypt'));
 
 userSchema.options.toJSON = {

@@ -26,3 +26,51 @@ body {
 a {
   cursor: pointer;
 }
+
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+}
+
+footer {
+  position: absolute;
+  bottom: 25px;
+  left:   5%;
+  width:  90%;
+  font-size: 1rem;
+  height: 60px;
+  z-index: -1; /* when using the dev console the footer can overlap content */
+}
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 950px;
+}
+
+header,
+main,
+footer {
+  text-align: center;
+}
+
+header {
+  text-transform: uppercase;
+}
+
+.navbar-brand {
+  padding: 5px 0;
+}
+
+form {
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#exampleInputEmail1.red-border {
+  border: 2px solid red;
+}
