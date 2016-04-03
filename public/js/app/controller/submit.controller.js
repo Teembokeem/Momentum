@@ -5,9 +5,9 @@
     .module("Momentum")
     .controller("SubmitController", SubmitController);
 
-  SubmitController.$inject = ["$log", "$http", "$window"];
+  SubmitController.$inject = ["$log", "$http", "$window", "$state"];
 
-  function SubmitController($log, $http, $window) {
+  function SubmitController($log, $http, $window, $state) {
     var vm = this;
     $log.debug("SubmitController Loaded.");
     vm.toggleValue = true;
@@ -39,23 +39,25 @@
       })
       .then(function(res) {
         $log.debug("success!", res.data)
+        submitSignIn(vm.testNewUser)
       }, function(err) {
         $log.debug(err)
         if (err.status === 409) vm.conflict = "emailError";
       });
     };
 
-    function submitSignIn() {
+    function submitSignIn(data) {
       $log.debug("Logging In:");
 
       $http({
         method: "POST",
         url: "api/token",
-        data: vm.testExistingUser
+        data: data
       })
       .then(function(res) {
         $log.debug("success!", res.data);
         $window.localStorage.setItem(TOKEN_KEY, res.data.token)
+        $state.go("momentum")
       }, function(err) {
         $log.debug(err);
         if (err.status === 403) vm.conflict = "passwordError";
