@@ -12,7 +12,7 @@
       .state("landing", {
         url: "/",
         templateUrl: "js/app/templates/landing.html"
-      });
+      })
 
     $urlRouterProvider.otherwise("/");
   }
