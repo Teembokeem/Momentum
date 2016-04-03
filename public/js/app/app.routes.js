@@ -18,6 +18,12 @@
         templateUrl: "js/app/templates/signin.html",
         controller: "SubmitController",
         controllerAs: "vm"
+      })
+      .state("momentum", {
+        url: "/momentum",
+        templateUrl: "js/app/templates/momentum.html",
+        controller: "MomentumController",
+        controllerAs: "vm"
       });
 
     $urlRouterProvider.otherwise("/");
