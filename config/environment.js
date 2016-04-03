@@ -2,11 +2,11 @@ var _ = require('lodash');
 
 var localEnvVars = {
 
-  TITLE:          'Auth App',
-  SAFE_TITLE:     'auth-app',
+  TITLE:          'Momentum',
+  SAFE_TITLE:     'momentum',
   COOKIE_SECRET:  'notsosecretnowareyou',
   SESSION_SECRET: 'anotherfoolishsecret',
-  TOKEN_SECRET:   'andafinalsecretsadasitis'
+  TOKEN_SECRET:   'momentum'
 };
 
 // Merge all environmental variables into one object.

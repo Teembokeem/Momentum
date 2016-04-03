@@ -24,6 +24,8 @@ body {
   background: url("http://41.media.tumblr.com/ed3e266d8687facf34448ef24b3e161b/tumblr_nkyd2uaBk81u16n75o1_1280.jpg");
   background-size: cover;
   background-position: 0px, 30px, 0, 0;
+  padding: 0;
+  margin: 0 auto;
 }
 
 a {
@@ -81,4 +83,12 @@ input[type=text]:focus {
 
 .sign-in-card * {
   color: white;
+}
+
+a, .btn {
+  color: #d8943e;
+}
+
+.btn-holder {
+  margin-top: 50px;
 }
