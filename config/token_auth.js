@@ -2,8 +2,6 @@ var jwt = require('jsonwebtoken');
 
 var User = require('../models/user');
 
-// This file exposes three methods, all of which use the standard
-// Express middleware signature: function(req, res, next) -> undefined
 module.exports = {
   create:       create,
   refresh:      refresh,
@@ -30,8 +28,13 @@ function extractPayload(user, options) {
 // Sets any options for token creation (using the node-jsonwebtoken
 // library). See also: https://github.com/auth0/node-jsonwebtoken
 const jwtOptions = {
+<<<<<<< HEAD
+  algorithm: 'HS256',
+  expiresIn: '7 days'
+=======
   algorithm: "HS256",
   expiresIn: "7 days"
+>>>>>>> master
 };
 
 // ******************************** API ********************************
@@ -62,10 +65,14 @@ function create(req, res, next) {
 
       var token = generateJwt(user);
 
+<<<<<<< HEAD
+      res.json(token);
+=======
       res.json({
         message: 'Successfully generated token',
         token:   token
       });
+>>>>>>> master
     });
 }
 
@@ -79,10 +86,14 @@ function refresh(req, res, next) {
     .then(function(user) {
       var token = generateJwt(user);
 
+<<<<<<< HEAD
+      res.json(token);
+=======
       res.json({
         message: 'Successfully generated token',
         token:   token
       });
+>>>>>>> master
     });
 }
 
@@ -130,22 +141,34 @@ function findTokenInAuthHeader(req) {
   var token;
 
   var header = req.get('Authorization');
+<<<<<<< HEAD
+  if (!header) header = req.get('Authorisation');
+
+  if (header) {
+=======
   if (!header) header = req.get('Authorisation'); // Que cosmopolita!
 
   // If Authorization header found.
   if (header) {
     // Check the Authorization header for the given pattern, and
     // set the token to the 2nd match group if it exists.
+>>>>>>> master
     var match = header.match(/(bearer|token) (.*)/i);
     token = match ? match[2] : match;
   }
 
+<<<<<<< HEAD
+=======
   // If no well-formed token found yet, search the URI query string.
+>>>>>>> master
   if (!token) {
     token = req.query.token;
   }
 
+<<<<<<< HEAD
+=======
   // Return a token if found, undefined if not.
+>>>>>>> master
   return token;
 }
 

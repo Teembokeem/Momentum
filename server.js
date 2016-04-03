@@ -39,7 +39,8 @@ if (app.get('env') === 'development') {
 app.use(logger('dev'));
 
 // Static routing layer.
-app.use(favicon(path.join(__dirname, 'public', 'ga-favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse and debug requests.
@@ -88,6 +89,7 @@ function debugReq(req, res, next) {
   next();
 }
 
+
 function validateContentType(req, res, next) {
   var methods = ['PUT', 'PATCH', 'POST'];
   if (                                    // If the request is
@@ -115,9 +117,7 @@ function allowCors(req, res, next) {
   }
 }
 
-// When there is a 401 Unauthorized, the repsonse shall include a header
-// WWW-Authenticate that tells the client how they must authenticate
-// their requests.
+
 function addFailedAuthHeader(err, req, res, next) {
   var header = {'WWW-Authenticate': 'Bearer'};
   if (err.status === 401) {

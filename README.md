@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+# MEAN Starter Code
+
+...
+=======
 # Ng Auth App Walkthru
 
 ## Starter Code / Initial Commit
@@ -116,3 +121,4 @@ the "one component per file" rule!*
 [run]:          https://docs.angularjs.org/guide/module#module-loading-dependencies
 [custom-data]:  https://github.com/angular-ui/ui-router/wiki#attach-custom-data-to-state-objects
 [y171]:         https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#run-blocks
+>>>>>>> master
