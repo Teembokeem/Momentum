@@ -13,9 +13,11 @@
         url: "/",
         templateUrl: "js/app/templates/landing.html"
       })
-      .state("signin", {
-        url: "/signin",
-        templateUrl: "js/app/templates/signin.html"
+      .state("submit", {
+        url: "/submit",
+        templateUrl: "js/app/templates/signin.html",
+        controller: "SubmitController",
+        controllerAs: "vm"
       });
 
     $urlRouterProvider.otherwise("/");
