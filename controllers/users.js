@@ -14,9 +14,6 @@ function create(req, res, next) {
   User
     .create(req.body)
     .then(function(user) {
-<<<<<<< HEAD
-      res.json(user);
-=======
       res.json({
         success: true,
         message: 'Successfully created user.',
@@ -25,7 +22,6 @@ function create(req, res, next) {
           id:    user._id
         }
       });
->>>>>>> master
     }).catch(function(err) {
       if (err.message.match(/E11000/)) {
         err.status = 409;
@@ -40,23 +36,16 @@ function me(req, res, next) {
   User
     .findOne({email: req.decoded.email}).exec()
     .then(function(user) {
-<<<<<<< HEAD
-      res.json(user);
-=======
       res.json({
         success: true,
         message: 'Successfully retrieved user data.',
         data:    user
       });
->>>>>>> master
     })
     .catch(function(err) {
       next(err);
     });
 };
-<<<<<<< HEAD
-=======
-
 function update(req, res, next) {
   User
     .findById(req.decoded._id).exec()
@@ -88,4 +77,3 @@ function update(req, res, next) {
       next(err);
     });
 }
->>>>>>> master

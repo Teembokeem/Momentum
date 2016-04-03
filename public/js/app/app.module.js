@@ -2,5 +2,5 @@
   "use strict";
 
   angular
-    .module("app", ["ui.router"]);
+    .module("Momentum", ["ui.router", "ngResource"]);
 })();
