@@ -13,10 +13,11 @@
 
         "use strict";
 
+    //VARIABLES FOR ENVIRONMENT
     var scene       = new THREE.Scene(),
         light       = new THREE.AmbientLight(0xffffff),
         renderer,
-        camera      = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 0.1, 1000 ),
+        camera      = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 ),
         renderer    = new THREE.WebGLRenderer(),
         mouseX      = 0,
         mouseY      = 0,
@@ -26,47 +27,37 @@
     renderer.setSize( 1000, 450 );
     document.getElementById("momentum").appendChild(renderer.domElement);
 
-    // var geometry = new THREE.IcosahedronGeometry( 50, 1 );
+    //MOMENT CREATION
     var geometry = new THREE.Geometry();
 
+    //RANDOMIZER UTILITY
     function rng(max, min, bool) {
       if (bool) return Math.floor((Math.random() * (max - min)) + min);
       else return (Math.random() * (max - min)) + min;
     };
 
+    //MOMENT VARIABLES
     var momentFactor    = rng(0.75, 0.5, false);
     var momentApexNadir = [ rng(200, 100, true), -(rng(200, 100, true)) ];
-    // $log.debug(momentPoles)
+    $log.debug("your apex and nadir:", momentApexNadir)
+
 
     geometry.vertices.push(
       new THREE.Vector3(   0,  momentApexNadir[0],   0 ),
       new THREE.Vector3(   0, momentApexNadir[1],   0 ),
-      new THREE.Vector3(  momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3(  momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3(   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false), momentApexNadir[1] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3(   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false), momentApexNadir[1] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3(   momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false),  momentApexNadir[1] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3(   momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false),  momentApexNadir[1] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3( momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
-      new THREE.Vector3( momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) )
+      new THREE.Vector3(   -100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   100 ),
+      new THREE.Vector3(   100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   -100 ),
+      new THREE.Vector3(   -100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   -100 ),
+      new THREE.Vector3(   100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   100 )
     );
 
-    geometry.faces.push( new THREE.Face3( 0, 2, 3 ) );
-    geometry.faces.push( new THREE.Face3( 0, 3, 4 ) );
-    geometry.faces.push( new THREE.Face3( 0, 4, 5 ) );
-    geometry.faces.push( new THREE.Face3( 0, 5, 6 ) );
-    geometry.faces.push( new THREE.Face3( 0, 6, 7 ) );
-    geometry.faces.push( new THREE.Face3( 0, 7, 8 ) );
-    geometry.faces.push( new THREE.Face3( 0, 8, 9 ) );
-    geometry.faces.push( new THREE.Face3( 0, 2, 9 ) );
-    geometry.faces.push( new THREE.Face3( 1, 2, 3 ) );
-    geometry.faces.push( new THREE.Face3( 1, 3, 4 ) );
-    geometry.faces.push( new THREE.Face3( 1, 4, 5 ) );
-    geometry.faces.push( new THREE.Face3( 1, 5, 6 ) );
-    geometry.faces.push( new THREE.Face3( 1, 6, 7 ) );
-    geometry.faces.push( new THREE.Face3( 1, 7, 8 ) );
-    geometry.faces.push( new THREE.Face3( 1, 8, 9 ) );
-    geometry.faces.push( new THREE.Face3( 1, 2, 9 ) );
+    console.log("your vertices:", geometry.vertices[2], geometry.vertices[3], geometry.vertices[4], geometry.vertices[5])
+
+    geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
+    geometry.faces.push( new THREE.Face3( 0, 1, 3 ) );
+    geometry.faces.push( new THREE.Face3( 0, 1, 4 ) );
+    geometry.faces.push( new THREE.Face3( 0, 1, 5 ) );
+
 
     geometry.computeBoundingSphere();
 
