@@ -21,7 +21,7 @@ body {
   font-size: 18px;
   margin: auto 1rem 60px;
   color: tgba(51, 51, 51, 1);
-  background: url("http://41.media.tumblr.com/ed3e266d8687facf34448ef24b3e161b/tumblr_nkyd2uaBk81u16n75o1_1280.jpg");
+  /*background: url("http://41.media.tumblr.com/ed3e266d8687facf34448ef24b3e161b/tumblr_nkyd2uaBk81u16n75o1_1280.jpg");*/
   background-size: cover;
   background-position: 0px, 30px, 0, 0;
   padding: 0;
@@ -95,4 +95,8 @@ a, .btn {
 
 .conflict {
   color: #ff2218 ;
+}
+
+#momentum {
+  height: 500px;
 }
