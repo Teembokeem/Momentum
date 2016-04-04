@@ -34,29 +34,39 @@
       else return (Math.random() * (max - min)) + min;
     };
 
-    var rngHeightWidthFactor = rng(0.75, 0.5, false);
-    var rngApexNadir = [ rng(200, 100, true), -(rng(200, 100, true)) ];
-    var rngPoles     = [ rngApexNadir[0] * rngHeightWidthFactor, rngApexNadir[1] * rngHeightWidthFactor ]
-
-    $log.debug(rngPoles)
+    var momentFactor    = rng(0.75, 0.5, false);
+    var momentApexNadir = [ rng(200, 100, true), -(rng(200, 100, true)) ];
+    // $log.debug(momentPoles)
 
     geometry.vertices.push(
-      new THREE.Vector3(   0,  rngApexNadir[0],   0 ),
-      new THREE.Vector3(   0, rngApexNadir[1],   0 ),
-      new THREE.Vector3(  rngPoles[0],   0,   rngPoles[0] ),
-      new THREE.Vector3(   rngPoles[0],   40, rngPoles[1] ),
-      new THREE.Vector3( rngPoles[1],   0,   rngPoles[0] ),
-      new THREE.Vector3(   rngPoles[1],   40,  rngPoles[1] )
+      new THREE.Vector3(   0,  momentApexNadir[0],   0 ),
+      new THREE.Vector3(   0, momentApexNadir[1],   0 ),
+      new THREE.Vector3(  momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3(  momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3(   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false), momentApexNadir[1] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3(   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false), momentApexNadir[1] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3(   momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false),  momentApexNadir[1] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3(   momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[1] * rng(0.75, 0.25, false),  momentApexNadir[1] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3( momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) ),
+      new THREE.Vector3( momentApexNadir[1] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false),   momentApexNadir[0] * rng(0.75, 0.25, false) )
     );
 
-    geometry.faces.push( new THREE.Face3( 0, 2, 5 ) );
     geometry.faces.push( new THREE.Face3( 0, 2, 3 ) );
     geometry.faces.push( new THREE.Face3( 0, 3, 4 ) );
     geometry.faces.push( new THREE.Face3( 0, 4, 5 ) );
-    geometry.faces.push( new THREE.Face3( 1, 2, 5 ) );
+    geometry.faces.push( new THREE.Face3( 0, 5, 6 ) );
+    geometry.faces.push( new THREE.Face3( 0, 6, 7 ) );
+    geometry.faces.push( new THREE.Face3( 0, 7, 8 ) );
+    geometry.faces.push( new THREE.Face3( 0, 8, 9 ) );
+    geometry.faces.push( new THREE.Face3( 0, 2, 9 ) );
     geometry.faces.push( new THREE.Face3( 1, 2, 3 ) );
     geometry.faces.push( new THREE.Face3( 1, 3, 4 ) );
     geometry.faces.push( new THREE.Face3( 1, 4, 5 ) );
+    geometry.faces.push( new THREE.Face3( 1, 5, 6 ) );
+    geometry.faces.push( new THREE.Face3( 1, 6, 7 ) );
+    geometry.faces.push( new THREE.Face3( 1, 7, 8 ) );
+    geometry.faces.push( new THREE.Face3( 1, 8, 9 ) );
+    geometry.faces.push( new THREE.Face3( 1, 2, 9 ) );
 
     geometry.computeBoundingSphere();
 
@@ -81,7 +91,7 @@
       // camera.position.x += ( mouseX - camera.position.x );
       // camera.position.y += ( - mouseY - camera.position.y );
       // camera.lookAt( scene.position );
-      cube.rotation.y += 0.005;
+      cube.rotation.y += 0.001;
 
       // console.log(cubic-bezier(.17,.67,.83,.67))
 
