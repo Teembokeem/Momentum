@@ -19,11 +19,15 @@
         controller: "SubmitController",
         controllerAs: "vm"
       })
-      .state("momentum", {
-        url: "/momentum",
+      .state("moment", {
+        url: "/moment",
         templateUrl: "js/app/templates/moment.html",
         controller: "MomentController",
         controllerAs: "vm"
+      })
+      .state("moment.create", {
+        url: "/create",
+        templateUrl: "js/app/templates/moment.create.html"
       });
 
     $urlRouterProvider.otherwise("/");

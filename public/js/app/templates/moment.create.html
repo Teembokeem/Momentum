@@ -1,0 +1,34 @@
+<div class="sign-in-form" ng-if="'moment.create' | isState">
+ <div class="row">
+   <div class="col m4 offset-m4">
+     <div class="sign-in-card card hoverable z-depth-3">
+       <div class="card-content">
+         <div class="row">
+           <form ng-submit="vm.submitMoment(vm.newMoment);" class="col s12">
+             <div class="col s12">
+               <input ng-model="vm.newMoment.title" id="title" type="text" class="validate">
+               <label for="title" data-error="wrong" data-success="right">T I T L E</label>
+             </div>
+             <div class="col s12">
+               <input ng-model="vm.newMoment.text" id="text" type="text" class="validate">
+               <label for="text" data-error="wrong" data-success="right">T E X T</label>
+             </div>
+             <div class="col s12">
+               <input ng-model="vm.newMoment.images" id="images" type="text" class="validate">
+               <label for="images" data-error="wrong" data-success="right">I M A G E</label>
+             </div>
+             <div class="col s12">
+               <img src="{{vm.newMoment.images}}" alt="">
+             </div>
+             <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign Up Here</u></label></span>
+             <div class="col s12 btn-holder">
+               <button class="btn grey darken-4" type="submit">S U B M I T</button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+

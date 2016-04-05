@@ -41,7 +41,7 @@
       .then(
         function(decodedToken) {
           $log.info('Logged In!', decodedToken);
-          $state.go('momentum');
+          $state.go('moment');
         }, function(err) {
         $log.info(err)
         if (err.status === 409) vm.conflict = "emailError";
@@ -57,7 +57,7 @@
         .then(
           function(decodedToken) {
             $log.info("success!", decodedToken);
-            $state.go("momentum");
+            $state.go("moment");
           }, function(err) {
             $log.info(err);
             if (err.status === 403) vm.conflict = "passwordError";

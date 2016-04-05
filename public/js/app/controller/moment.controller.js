@@ -5,16 +5,14 @@
     .module("Momentum")
     .controller("MomentController", MomentController);
 
-  MomentController.$inject = ["$log", "$http", "$window", "tokenService"];
+  MomentController.$inject = ["$log", "$http", "$state", "$window", "tokenService"];
 
-  function MomentController($log, $http, $window, token) {
+  function MomentController($log, $http, $state, $window, token) {
     $log.debug('MomentController Loaded.')
     //variables
     var vm = this;
     vm.user = token.decode();
     vm.moments;
-    vm.momentControls = 'main';
-    vm.createMoment = false;
     vm.conflict;
     vm.momentTemplate = {
       title: "",
@@ -24,10 +22,16 @@
     }
 
     //bindings
+    vm.transition   = transition;
     vm.submitMoment = submitMoment;
     vm.renderMoment = renderMoment;
 
     //functions
+    function transition(state) {
+      console.log("state chosen:", state ? state : "main")
+      $state.go("moment" + state);
+    };
+
     function submitMoment(data) {
       $log.debug("posting!", data);
       $http({
@@ -37,8 +41,10 @@
       })
       .then(function(res) {
         $log.debug("successfully added moment", res.data)
-        grabMoments();
-        vm.momentControls = "main";
+        grabMoments()
+        .then(function(res) {
+          transition('');
+        })
       })
     };
 
@@ -54,7 +60,7 @@
     }
 
     function grabMoments() {
-      $http({
+      var promise = $http({
         method: 'GET',
         url: "api/moments"
       })
@@ -70,6 +76,7 @@
         function(err) {
           console.log("something went wrong:", err)
         })
+      return promise;
     };
 
 
