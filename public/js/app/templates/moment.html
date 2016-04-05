@@ -1,4 +1,4 @@
-<h2> {{vm.user.name.toUpperCase();}} </h2>
+<h1> {{vm.user.name.toUpperCase();}} </h1>
 <div id="momentum" class="row">
   <button ng-if="'moment' | isState" ng-click="vm.transition('.create');" class="btn grey darken-4" type="text">C R E A T E A M O M E N T</button>
   <button ng-if="!('moment' | isState)" ng-click="vm.transition('');" class="btn grey darken-4" type="text">B A C K T O M O M E N T S</button>

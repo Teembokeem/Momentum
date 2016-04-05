@@ -25,13 +25,13 @@
 <body>
 
   <nav class="grey darken-3">
-    <a ui-sref="submit" class="waves-effect waves-light right btn black">S I G N I N</a>
+    <a ui-sref="submit.signin" class="waves-effect waves-light right btn black">S I G N I N</a>
     <a ui-sref="landing" class="waves-effect waves-light left btn black">H O M E</a>
   </nav>
 
   <div class="row">
      <div class="center-align">
-       <h1 class="card-title">M O M E N T U M</h1>
+       <h1 ng-if="'landing' | isState" class="card-title">M O M E N T U M</h1>
      </div>
   </div>
 
@@ -40,7 +40,6 @@
   </main>
 
   <script src="/js/app/app.module.js"></script>
-  <script src="/js/app/app.routes.js"></script>
   <script src="/js/app/config/app.debug.js"></script>
   <script src="/js/app/config/jsonHeaders.service.js"></script>
   <script src="/js/app/config/tokenSigning.service.js"></script>
@@ -49,6 +48,7 @@
   <script src="/js/app/services/token.service.js"></script>
   <script src="/js/app/services/auth.service.js"></script>
   <script src="/js/app/services/user.service.js"></script>
+  <script src="/js/app/app.routes.js"></script>
   <script src="/js/app/controller/submit.controller.js"></script>
   <script src="/js/app/controller/moment.controller.js"></script>
 </body>

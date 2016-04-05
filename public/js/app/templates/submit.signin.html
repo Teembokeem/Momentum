@@ -1,0 +1,30 @@
+</h1><div class="sign-in-form">
+  <div class="row">
+    <div class="col m6 offset-m3">
+      <div class="sign-in-card card hoverable z-depth-3">
+        <div class="card-content">
+          <div class="row">
+            <form ng-submit="vm.submitSignIn(vm.testExistingUser);" class="col s12">
+              <div class="col s12">
+                <input ng-model="vm.testExistingUser.email" id="email" type="email" class="validate">
+                <label for="email" data-error="wrong" data-success="right">Email</label>
+              </div>
+              <div class=" col s12">
+                <input ng-model="vm.testExistingUser.password" id="password" type="password" class="validate">
+                <label for="password" data-error="wrong" data-success="right">Password</label>
+              </div>
+              <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ui-sref="submit.signup">Sign Up Here</u></label></span>
+              <div class="col s12 btn-holder">
+                <div class="row">
+                  <button class="offset-s2 col btn grey darken-4" type="submit">S U B M I T</button>
+                  <p class="col">- O R -</p>
+                  <button ui-sref="submit.signup" class="col btn grey darken-4">S I G N U P</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
