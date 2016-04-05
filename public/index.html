@@ -29,9 +29,10 @@
     <a ui-sref="landing" class="waves-effect waves-light left btn black">H O M E</a>
   </nav>
 
-  <div class="row">
+  <div class="row" ng-controller="MomentController as vm">
      <div class="center-align">
        <h1 class="card-title">M O M E N T U M</h1>
+       <h2> {{vm.user.name.toUpperCase();}} </h2>
      </div>
   </div>
 
@@ -50,6 +51,6 @@
   <script src="/js/app/services/auth.service.js"></script>
   <script src="/js/app/services/user.service.js"></script>
   <script src="/js/app/controller/submit.controller.js"></script>
-  <script src="/js/app/controller/momentum.controller.js"></script>
+  <script src="/js/app/controller/moment.controller.js"></script>
 </body>
 </html>

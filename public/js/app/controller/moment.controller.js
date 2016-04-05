@@ -3,13 +3,14 @@
 
   angular
     .module("Momentum")
-    .controller("MomentumController", MomentumController);
+    .controller("MomentController", MomentController);
 
-  MomentumController.$inject = ["$log", "$http", "$window"];
+  MomentController.$inject = ["$log", "$http", "$window", "tokenService"];
 
-  function MomentumController($log, $http, $window) {
-    $log.debug('MomentumController Loaded.')
+  function MomentController($log, $http, $window, token) {
+    $log.debug('MomentController Loaded.')
     var vm = this;
+    vm.user = token.decode();
 
     vm.createMoment = false;
     vm.conflict;
@@ -18,7 +19,14 @@
 
     function submitMoment(data) {
       $log.debug("posting!", data);
-
+      $http({
+        method: 'POST',
+        url: "api/moments",
+        data: data
+      })
+      .then(function(res) {
+        $log.debug("successfully added moment", res.data)
+      })
     };
 
   };

@@ -19,11 +19,11 @@
                  <label for="text" data-error="wrong" data-success="right">T E X T</label>
                </div>
                <div class="col s12">
-                 <input ng-model="vm.newMoment.image" id="image" type="text" class="validate">
-                 <label for="image" data-error="wrong" data-success="right">I M A G E</label>
+                 <input ng-model="vm.newMoment.images" id="images" type="text" class="validate">
+                 <label for="images" data-error="wrong" data-success="right">I M A G E</label>
                </div>
                <div class="col s12">
-                 <img src="{{vm.newMoment.image}}" alt="">
+                 <img src="{{vm.newMoment.images}}" alt="">
                </div>
                <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign Up Here</u></label></span>
                <div class="col s12 btn-holder">

@@ -22,7 +22,7 @@
       .state("momentum", {
         url: "/momentum",
         templateUrl: "js/app/templates/momentum.html",
-        controller: "MomentumController",
+        controller: "MomentController",
         controllerAs: "vm"
       });
 
