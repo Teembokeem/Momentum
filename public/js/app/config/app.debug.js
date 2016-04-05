@@ -1,16 +1,16 @@
-(function() {
-  "use strict";
+// (function() {
+//   "use strict";
 
-  angular
-    .module("app")
-    .config(debug);
+//   angular
+//     .module("Momentum")
+//     .config(debug);
 
-  debug.$inject = ["$logProvider"];
+//   debug.$inject = ["$logProvider"];
 
-  function debug($logProvider) {
-    // Set this to true to print $log.debug statements to the
-    // console.
-    $logProvider.debugEnabled(false);
-  }
+//   function debug($logProvider) {
+//     // Set this to true to print $log.debug statements to the
+//     // console.
+//     $logProvider.debugEnabled(false);
+//   }
 
-})();
+// })();

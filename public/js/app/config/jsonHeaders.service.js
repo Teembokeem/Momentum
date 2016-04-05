@@ -2,7 +2,7 @@
   "use strict";
 
   angular
-    .module("app")
+    .module("Momentum")
     .factory("jsonHeadersService", jsonHeadersService);
 
   jsonHeadersService.$inject = ["$log"];

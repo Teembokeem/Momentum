@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app')
+    .module('Momentum')
     .factory("tokenService", tokenService);
 
   tokenService.$inject = ["$log", "$window"];
@@ -10,7 +10,7 @@
   function tokenService($log, $window) {
     $log.debug("tokenService loaded!");
 
-    const TOKEN_KEY = 'shmee-banana';
+    const TOKEN_KEY = 'moment_token';
     var service = {
       store:    store,
       retrieve: retrieve,

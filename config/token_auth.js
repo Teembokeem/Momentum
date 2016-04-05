@@ -103,7 +103,8 @@ function authenticate(req, res, next) {
 
   verifyJwtAndHandleErrors(token, next, function(decoded) {
     req.decoded = decoded;
-    next({req.user = req.decoded.user});
+    req.user = decoded.user
+    next();
   });
 }
 

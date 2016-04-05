@@ -2,7 +2,7 @@
   "use strict";
 
   angular
-    .module("app")
+    .module("Momentum")
     .factory("authErrorRedirect", authErrorRedirect);
 
   authErrorRedirect.$inject = ["$log", "$q"];
@@ -23,7 +23,7 @@
       // bad authorization) error, redirect to the sign in page.
       if (err.status === 401 || err.status === 403) {
         $log.debug(`${status} response received! Redirecting user to signin.`);
-        $state.go('signin');
+        // $state.go('signin');
       }
 
       // Now that we've done our due diligence, pass the error through

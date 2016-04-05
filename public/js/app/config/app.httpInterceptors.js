@@ -2,7 +2,7 @@
   "use strict";
 
   angular
-    .module("app")
+    .module("Momentum")
     .config(configure);
 
   configure.$inject = ["$httpProvider"];

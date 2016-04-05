@@ -2,7 +2,7 @@
   "use strict";
 
   angular
-    .module("app")
+    .module("Momentum")
     .factory("tokenSigningService", tokenSigningService);
 
   tokenSigningService.$inject = ["$log", "tokenService"];

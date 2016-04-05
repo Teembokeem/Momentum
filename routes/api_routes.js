@@ -3,7 +3,7 @@ var express = require('express'),
 
 // Require controllers.
 var usersCtrl = require('../controllers/users');
-var MomentController = require('../controllers/moment');
+var MomentController = require('../controllers/moments');
 
 // Require token authentication.
 var token = require('../config/token_auth');

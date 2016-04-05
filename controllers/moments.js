@@ -6,7 +6,7 @@ module.exports = {
   show:   show,
   create: create,
   put:    put,
-  delete: delete
+  delete: destroy
 };
 
 function index(req, res, next) {
@@ -25,7 +25,7 @@ function put(req, res, next) {
   console.log("hello user", req.user)
 }
 
-function delete(req, res, next) {
+function destroy(req, res, next) {
   console.log("hello user", req.user)
 }
 

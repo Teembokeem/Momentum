@@ -17,11 +17,15 @@
     vm.submitMoment = submitMoment;
 
     function submitMoment(data) {
-      $log.debug("posting!", data)
+      $log.debug("posting!", data);
 
-    }
+    };
 
-    //VARIABLES FOR ENVIRONMENT
+  };
+
+})();
+
+    // //VARIABLES FOR ENVIRONMENT
     // var scene       = new THREE.Scene(),
     //     light       = new THREE.AmbientLight(0xffffff),
     //     renderer,
@@ -128,7 +132,3 @@
     // }
     // render();
 
-
-
-  }
-})();

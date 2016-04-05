@@ -5,7 +5,7 @@
     .module("Momentum")
     .controller("SubmitController", SubmitController);
 
-  SubmitController.$inject = ["$log", "authService", "userService, "$state"];
+  SubmitController.$inject = ["$log", "authService", "userService", "$state"];
 
   function SubmitController($log, authService, userService, $state) {
     var vm = this;
@@ -30,35 +30,39 @@
 
     //FUNCTIONS
     function submitSignUp() {
-      $log.debug("Signing Up: ");
+      $log.info("Signing Up: ");
 
       userService
       .create(vm.testNewUser)
       .then(function(res) {
-        $log.debug("success!", res.data)
-        submitSignIn(vm.testNewUser)
-      }, function(err) {
-        $log.debug(err)
+        $log.info("success!", res.data)
+        return authService.logIn(vm.testNewUser)
+      })
+      .then(
+        function(decodedToken) {
+          $log.info('Logged In!', decodedToken);
+          $state.go('momentum');
+        }, function(err) {
+        $log.info(err)
         if (err.status === 409) vm.conflict = "emailError";
-      });
+        }
+      );
     };
 
     function submitSignIn(data) {
-      $log.debug("Logging In:");
+      $log.info("Logging In:");
 
-      $http({
-        method: "POST",
-        url: "api/token",
-        data: data
-      })
-      .then(function(res) {
-        $log.debug("success!", res.data);
-        $window.localStorage.setItem(TOKEN_KEY, res.data.token)
-        $state.go("momentum")
-      }, function(err) {
-        $log.debug(err);
-        if (err.status === 403) vm.conflict = "passwordError";
-      });
+      authService
+        .logIn(vm.testExistingUser)
+        .then(
+          function(decodedToken) {
+            $log.info("success!", decodedToken);
+            $state.go("momentum");
+          }, function(err) {
+            $log.info(err);
+            if (err.status === 403) vm.conflict = "passwordError";
+          }
+        );
     }
 
   }

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app')
+    .module('Momentum')
     .factory("authService", authService);
 
   authService.$inject = ["$log", "tokenService", "$http"];
