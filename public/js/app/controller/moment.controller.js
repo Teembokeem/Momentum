@@ -56,7 +56,7 @@
         date: vm.moments[index].createdAt
       };
       $log.debug("your selected div:", vm.momentTemplate);
-
+      transition('.show', {"id": vm.moments[index]._id})
     }
 
     function grabMoments() {

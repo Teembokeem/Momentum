@@ -37,6 +37,10 @@
       .state("moment.create", {
         url: "/create",
         templateUrl: "js/app/templates/moment.create.html"
+      })
+      .state("moment.show", {
+        url: "/{id}",
+        templateUrl: "js/app/templates/moment.create.html"
       });
 
     $urlRouterProvider.otherwise("/");
