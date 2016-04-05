@@ -9,14 +9,49 @@
 
   function MomentController($log, $http, $window, token) {
     $log.debug('MomentController Loaded.')
+    //variables
     var vm = this;
     vm.user = token.decode();
     vm.moments;
     vm.momentControls = 'main';
     vm.createMoment = false;
     vm.conflict;
+    vm.momentTemplate = {
+      title: "",
+      text: "",
+      images: "",
+      date: ""
+    }
 
+    //bindings
     vm.submitMoment = submitMoment;
+    vm.renderMoment = renderMoment;
+
+    //functions
+    function submitMoment(data) {
+      $log.debug("posting!", data);
+      $http({
+        method: 'POST',
+        url: "api/moments",
+        data: data
+      })
+      .then(function(res) {
+        $log.debug("successfully added moment", res.data)
+        grabMoments();
+        vm.momentControls = "main";
+      })
+    };
+
+    function renderMoment(index) {
+      vm.momentTemplate = {
+        title: vm.moments[index].title,
+        text: vm.moments[index].text,
+        images: vm.moments[index].images,
+        date: vm.moments[index].createdAt
+      };
+      $log.debug("your selected div:", vm.momentTemplate);
+
+    }
 
     function grabMoments() {
       $http({
@@ -35,20 +70,6 @@
         function(err) {
           console.log("something went wrong:", err)
         })
-    };
-
-    function submitMoment(data) {
-      $log.debug("posting!", data);
-      $http({
-        method: 'POST',
-        url: "api/moments",
-        data: data
-      })
-      .then(function(res) {
-        $log.debug("successfully added moment", res.data)
-        grabMoments();
-        vm.momentControls = "main";
-      })
     };
 
 

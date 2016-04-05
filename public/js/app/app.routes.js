@@ -21,7 +21,7 @@
       })
       .state("momentum", {
         url: "/momentum",
-        templateUrl: "js/app/templates/momentum.html",
+        templateUrl: "js/app/templates/moment.html",
         controller: "MomentController",
         controllerAs: "vm"
       });
