@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var Moments = new mongoose.Schema({
   title: String,
   text:  String,
-  createdAt: {type: String, default: Date.now},
+  createdAt: {type: Date, default: Date.now},
   slug: String,
   images: [{type: String}],
   isPublished: {type: Boolean, default: false},

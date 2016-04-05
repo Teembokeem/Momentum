@@ -27,6 +27,10 @@
         function(res) {
           console.log(res.data);
           vm.moments = res.data.moments;
+          vm.moments.forEach(function(moment) {
+            var date = new Date(moment.createdAt);
+            moment.createdAt = date.toString("MM dd")
+          });
         },
         function(err) {
           console.log("something went wrong:", err)

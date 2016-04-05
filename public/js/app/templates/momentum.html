@@ -3,12 +3,13 @@
   <button ng-hide= "vm.momentControls ==='main'" ng-click="vm.momentControls = 'main'" class="btn grey darken-4" type="text">B A C K T O M O M E N T S</button>
 </div>
 
-<div>
-  <ul ng-show ="vm.momentControls === 'main' " ng-repeat="moment in vm.moments">
-    <li>
-      <strong>Title:{{moment.title}}</strong><p>text: {{moment.text}}</p>
-    </li>
-  </ul>
+<div class="row">
+  <div ng-show ="vm.momentControls === 'main' " ng-repeat="moment in vm.moments">
+
+    <div class="card hoverable z-depth-3 col m3">
+      <strong><p>Title:{{moment.title}}</p></strong><p>text: {{moment.text}}</p><p>{{moment.createdAt}}</p>
+    </div>
+  </div>
 </div>
 
 
