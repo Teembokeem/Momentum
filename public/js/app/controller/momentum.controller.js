@@ -28,7 +28,7 @@
     document.getElementById("momentum").appendChild(renderer.domElement);
 
     //MOMENT CREATION
-    var geometry = new THREE.Geometry();
+    var geometry;
 
     //RANDOMIZER UTILITY
     function rng(max, min, bool) {
@@ -37,29 +37,55 @@
     };
 
     //MOMENT VARIABLES
+      //ensures, width is is never the height: no squares
     var momentFactor    = rng(0.75, 0.5, false);
+      //defines bounding vertices for the gem (y-direction)
     var momentApexNadir = [ rng(200, 100, true), -(rng(200, 100, true)) ];
+      //defines outermost bound along the length of the moment
+    var momentPole      = Math.floor(momentApexNadir[0] * momentFactor);
+      //TODO: need to sengment momentPole into n sections and push randomly into array, tRings argument should end up being num
+    var tRings = [];
+    function tRingsGenerator() {
+      tRings.push(rng(5))
+    }
+
+    console.log(tRings)
+
     $log.debug("your apex and nadir:", momentApexNadir)
+    $log.debug("your pole:", momentPole)
+
+    // function boundingCircles(squaredRadius) {
+    //   $log.info("Creating our paired coordinates")
+    //   var x = rng(squaredRadius, 0, true);
+    //   $log.info("Randomized x value: should be greater than 0 and less than " + squaredRadius + ":", x);
+    //   var z = (function(compCoordinate) {
+    //     var num;
+    //     return num > Math.pow(((momentPole / 5) + (momentPole / 5) / 3) - x, 0.5 ) &&
+    //   })
+    //   $log.info("Randomized x value: should be greater than 0 and less than " + squaredRadius + ":", x);
+
+    // }
 
 
-    geometry.vertices.push(
+    var points = [
       new THREE.Vector3(   0,  momentApexNadir[0],   0 ),
       new THREE.Vector3(   0, momentApexNadir[1],   0 ),
       new THREE.Vector3(   -100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   100 ),
       new THREE.Vector3(   100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   -100 ),
       new THREE.Vector3(   -100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   -100 ),
       new THREE.Vector3(   100, rng(momentApexNadir[0] - 20, momentApexNadir[0] -50, true),   100 )
-    );
+    ];
 
-    console.log("your vertices:", geometry.vertices[2], geometry.vertices[3], geometry.vertices[4], geometry.vertices[5])
+    // console.log("your vertices:", geometry.vertices[2], geometry.vertices[3], geometry.vertices[4], geometry.vertices[5])
 
-    geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
-    geometry.faces.push( new THREE.Face3( 0, 1, 3 ) );
-    geometry.faces.push( new THREE.Face3( 0, 1, 4 ) );
-    geometry.faces.push( new THREE.Face3( 0, 1, 5 ) );
+    // geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
+    // geometry.faces.push( new THREE.Face3( 0, 1, 3 ) );
+    // geometry.faces.push( new THREE.Face3( 0, 1, 4 ) );
+    // geometry.faces.push( new THREE.Face3( 0, 1, 5 ) );
 
 
-    geometry.computeBoundingSphere();
+    // geometry.computeBoundingSphere();
+    geometry = new THREE.ConvexGeometry( points );
 
     var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
     var cube = new THREE.Mesh( geometry, material );
