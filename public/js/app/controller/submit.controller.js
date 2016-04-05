@@ -5,9 +5,9 @@
     .module("Momentum")
     .controller("SubmitController", SubmitController);
 
-  SubmitController.$inject = ["$log", "$http", "$window", "$state"];
+  SubmitController.$inject = ["$log", "authService", "userService, "$state"];
 
-  function SubmitController($log, $http, $window, $state) {
+  function SubmitController($log, authService, userService, $state) {
     var vm = this;
     $log.debug("SubmitController Loaded.");
     vm.toggleValue = true;
@@ -32,11 +32,8 @@
     function submitSignUp() {
       $log.debug("Signing Up: ");
 
-      $http({
-        method: "POST",
-        url: "/api/users",
-        data: vm.testNewUser
-      })
+      userService
+      .create(vm.testNewUser)
       .then(function(res) {
         $log.debug("success!", res.data)
         submitSignIn(vm.testNewUser)

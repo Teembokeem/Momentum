@@ -18,10 +18,10 @@ router.post('/token', token.create);
 router.post('/users/me/token', token.authenticate, token.refresh);
 
 // moment paths:
-router.get('/users/me/moments', token.authenticate, MomentController.index);
-router.get('/users/me/moments/:id', token.authenticate, MomentController.show);
-router.post('/users/me/moments', token.authenticate, MomentController.create);
-router.put('/users/me/moments/:id', token.authenticate, MomentController.put);
-router.delete('/users/me/moments/:id', token.authenticate, MomentController.delete);
+router.get('/moments', token.authenticate, MomentController.index);
+router.get('/moments/:id', token.authenticate, MomentController.show);
+router.post('/moments', token.authenticate, MomentController.create);
+router.put('/moments/:id', token.authenticate, MomentController.put);
+router.delete('/moments/:id', token.authenticate, MomentController.delete);
 
 module.exports = router;

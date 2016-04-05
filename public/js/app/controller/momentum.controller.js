@@ -18,6 +18,7 @@
 
     function submitMoment(data) {
       $log.debug("posting!", data)
+
     }
 
     //VARIABLES FOR ENVIRONMENT
