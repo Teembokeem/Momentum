@@ -5,13 +5,20 @@
     .module("Momentum")
     .controller("MomentumController", MomentumController);
 
-  MomentumController.$inject = ["$log", "$window"];
+  MomentumController.$inject = ["$log", "$http", "$window"];
 
-  function MomentumController($log, $window) {
+  function MomentumController($log, $http, $window) {
     $log.debug('MomentumController Loaded.')
     var vm = this;
 
     vm.createMoment = false;
+    vm.conflict;
+
+    vm.submitMoment = submitMoment;
+
+    function submitMoment(data) {
+      $log.debug("posting!", data)
+    }
 
     //VARIABLES FOR ENVIRONMENT
     // var scene       = new THREE.Scene(),

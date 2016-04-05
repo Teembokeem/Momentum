@@ -11,7 +11,7 @@
            <div class="row">
              <form ng-submit="vm.submitMoment(vm.newMoment);" class="col s12">
                <div class="col s12">
-                 <input ng-model="vm.newMoment.title" id="title" type="title" class="validate">
+                 <input ng-model="vm.newMoment.title" id="title" type="text" class="validate">
                  <label for="title" data-error="wrong" data-success="right">T I T L E</label>
                </div>
                <div class="col s12">
@@ -19,8 +19,11 @@
                  <label for="text" data-error="wrong" data-success="right">T E X T</label>
                </div>
                <div class="col s12">
-                 <input ng-model="vm.newMoment.image" id="image" type="image" class="validate">
-                 <label for="image" data-error="wrong" data-success="right">E M A I L</label>
+                 <input ng-model="vm.newMoment.image" id="image" type="text" class="validate">
+                 <label for="image" data-error="wrong" data-success="right">I M A G E</label>
+               </div>
+               <div class="col s12">
+                 <img src="{{vm.newMoment.image}}" alt="">
                </div>
                <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign Up Here</u></label></span>
                <div class="col s12 btn-holder">
