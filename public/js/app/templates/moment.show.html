@@ -1,0 +1,20 @@
+<div class="row">
+  <div class=" col m12">
+    <div class="sign-in-card hoverable z-depth-3">
+      <div class="row">
+        <div class="col m4 offset-m1">
+          <h1>CRYSTAL</h1>
+        </div>
+        <div class="col m5 push-m1">
+          <h1>{{vm.selectedMoment.title.toUpperCase();}} </h1>
+          <br>
+          <div ng-repeat="image in vm.selectedMoment.images">
+            <img class="z-depth-5" src="{{image}}" alt="">
+          </div>
+          <p>{{vm.selectedMoment.text}} </p>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

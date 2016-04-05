@@ -13,6 +13,7 @@
     var vm = this;
     vm.user = token.decode();
     vm.moments;
+    vm.selectedMoment;
     vm.conflict;
     vm.momentTemplate = {
       title: "",
@@ -27,9 +28,9 @@
     vm.renderMoment = renderMoment;
 
     //functions
-    function transition(state) {
+    function transition(state, data) {
       console.log("state chosen:", state ? state : "main")
-      $state.go("moment" + state);
+      $state.go("moment" + state, data);
     };
 
     function submitMoment(data) {
@@ -55,6 +56,7 @@
         images: vm.moments[index].images,
         date: vm.moments[index].createdAt
       };
+      vm.selectedMoment = vm.moments[index];
       $log.debug("your selected div:", vm.momentTemplate);
       transition('.show', {"id": vm.moments[index]._id})
     }
