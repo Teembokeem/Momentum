@@ -19,7 +19,6 @@ router.post('/users/me/token', token.authenticate, token.refresh);
 
 // moment paths:
 router.get('/moments', token.authenticate, MomentController.index);
-router.get('/moments/:id', token.authenticate, MomentController.show);
 router.post('/moments', token.authenticate, MomentController.create);
 router.put('/moments/:id', token.authenticate, MomentController.put);
 router.delete('/moments/:id', token.authenticate, MomentController.delete);

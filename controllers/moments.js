@@ -2,31 +2,11 @@ var User = require('../models/user');
 
 
 module.exports = {
-  index:  index,
-  show:   show,
   create: create,
-  put:    put,
+  index:  read,
+  put:    update,
   delete: destroy
 };
-
-function index(req, res, next) {
-  console.log("hello user", req.user);
-  User.findById(req.decoded._id).exec()
-    .then(
-      function(user) {
-        res.json({
-          moments: user.moments
-      }, function(err) {
-        console.log(err)
-      }
-    );
-  })
-}
-
-function show(req, res, next) {
-  console.log("hello user", req.user);
-
-}
 
 function create(req, res, next) {
   console.log("hello user", req.user);
@@ -50,7 +30,23 @@ function create(req, res, next) {
 
 }
 
-function put(req, res, next) {
+function read(req, res, next) {
+  console.log("hello user", req.user);
+  User.findById(req.decoded._id).exec()
+    .then(
+      function(user) {
+        res.json({
+          moments: user.moments
+        });
+      },
+      function(err) {
+        console.log(err)
+      }
+    );
+}
+
+
+function update(req, res, next) {
   console.log("hello user", req.user);
 
 }

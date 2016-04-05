@@ -11,11 +11,27 @@
     $log.debug('MomentController Loaded.')
     var vm = this;
     vm.user = token.decode();
-
+    vm.moments;
+    vm.momentControls = 'main';
     vm.createMoment = false;
     vm.conflict;
 
     vm.submitMoment = submitMoment;
+
+    function grabMoments() {
+      $http({
+        method: 'GET',
+        url: "api/moments"
+      })
+      .then(
+        function(res) {
+          console.log(res.data);
+          vm.moments = res.data.moments;
+        },
+        function(err) {
+          console.log("something went wrong:", err)
+        })
+    };
 
     function submitMoment(data) {
       $log.debug("posting!", data);
@@ -26,9 +42,13 @@
       })
       .then(function(res) {
         $log.debug("successfully added moment", res.data)
+        grabMoments();
+        vm.momentControls = "main";
       })
     };
 
+
+  grabMoments();
   };
 
 })();
