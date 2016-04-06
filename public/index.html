@@ -26,9 +26,10 @@
 </head>
 <body>
 
-  <nav class="grey darken-3">
+  <nav class="grey darken-3" ng-controller="NavController as vm">
     <a ui-sref="submit.signin" class="waves-effect waves-light right btn black">S I G N I N</a>
     <a ui-sref="landing" class="waves-effect waves-light left btn black">H O M E</a>
+    <a ui-sref="landing"class="waves-effect waves-light center-align btn black">{{vm.user.name.toUpperCase();}}</a>
   </nav>
 
   <div class="row">
@@ -50,6 +51,7 @@
   <script src="/js/app/services/auth.service.js"></script>
   <script src="/js/app/services/user.service.js"></script>
   <script src="/js/app/app.routes.js"></script>
+  <script src="/js/app/controller/nav.controller.js"></script>
   <script src="/js/app/controller/submit.controller.js"></script>
   <script src="/js/app/controller/moment.controller.js"></script>
 </body>

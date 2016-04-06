@@ -11,7 +11,6 @@
     $log.debug('MomentController Loaded.')
     //variables
     var vm = this;
-    vm.user = token.decode();
     vm.moments;
     vm.selectedMoment;
     vm.conflict;

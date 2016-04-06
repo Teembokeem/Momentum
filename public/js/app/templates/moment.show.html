@@ -42,11 +42,11 @@
              <div class="col s12" ng-repeat="image in vm.selectedMoment.images">
                 <img class="z-depth-5" src="{{image}}" alt="">
              </div>
-             <div class="col s12 btn-holder">
+             <div class="col s6 btn-holder">
                <button class="btn grey darken-4" type="submit">S U B M I T</button>
              </div>
-             <div class="col s12 btn-holder">
-               <button ng-click="vm.showForm = !vm.showForm" class="btn grey darken-4" type="text">C A N C E L</button>
+             <div class="col s6 btn-holder">
+               <a ng-click="vm.showForm = !vm.showForm" class="btn grey darken-4" type="text">C A N C E L</a>
              </div>
            </form>
          </div>
