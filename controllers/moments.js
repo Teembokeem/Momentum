@@ -20,9 +20,10 @@ function create(req, res, next) {
       user.save(function(err, response) {
         console.log("successfully saved", response)
         console.log("any errors?:", err)
-      })
-      res.json({
-        success: "YASSSSS"
+        res.json({
+          success: "YASSSSS",
+          moment: response.moments[response.moments.length - 1]
+        })
       })
     }, function(err) {
       console.log("no user exists", err)

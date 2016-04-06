@@ -102,3 +102,16 @@ a, .btn {
   top:0;
   left: 0;
 }
+
+.image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.row .col.s2 {
+  margin-left: 0;
+}
+
+#momentum {
+  height: 600px;
+}

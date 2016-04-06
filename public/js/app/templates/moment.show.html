@@ -8,9 +8,7 @@
         <div class="col m5 push-m1">
           <h1>{{vm.selectedMoment.title.toUpperCase();}} </h1>
           <br>
-          <div ng-repeat="image in vm.selectedMoment.images">
-            <img class="z-depth-5" src="{{image}}" alt="">
-          </div>
+            <img ng-repeat="image in vm.selectedMoment.images" class="col s4 z-depth-5" src="{{image}}" alt="">
           <p>{{vm.selectedMoment.text}} </p>
           <br>
           <button ng-click="vm.showForm = !vm.showForm" class="col btn grey darken-4">U P D A T E</button>
@@ -22,7 +20,7 @@
 
 <div ng-show="vm.showForm" class="edit-form z-depth-5">
  <div class="row">
-   <div class="col m6 offset-m3">
+   <div class="col m12">
      <div class="sign-in-card card hoverable z-depth-3">
        <div class="card-content">
          <div class="row">
@@ -36,11 +34,11 @@
                <label for="text" data-error="wrong" data-success="right">T E X T</label>
              </div>
              <div class="col s12">
-               <input ng-model="vm.selectedMoment.images" id="images" type="text" class="validate">
+               <input ng-model="vm.selectedMoment.images[vm.imageNum]" id="images" type="text" class="validate">
                <label for="images" data-error="wrong" data-success="right">I M A G E</label>
              </div>
-             <div class="col s12" ng-repeat="image in vm.selectedMoment.images">
-                <img class="z-depth-5" src="{{image}}" alt="">
+             <div class="col s12 image-container">
+                <img ng-click="vm.imageNum = $index" ng-repeat="image in vm.selectedMoment.images" class="col s2 z-depth-5" src="{{image}}" alt="">
              </div>
              <div class="col s6 btn-holder">
                <button class="btn grey darken-4" type="submit">S U B M I T</button>

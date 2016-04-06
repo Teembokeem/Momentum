@@ -1,12 +1,11 @@
 
 <div class="row " ng-if="'moment.create' | isState">
   <div class="col m12">
-    <div class="sign-in-card hoverable z-depth-3">
+    <div class="hoverable z-depth-3">
       <div class="row">
-        <div class="col m4 offset-m1">
-          <h1>CRYSTAL</h1>
+        <div id="momentum" class="col m5">
         </div>
-        <div class="sign-in-card card hoverable z-depth-5 col m5 push-m1">
+        <div class="sign-in-card card hoverable z-depth-5 col m5 push-m2">
           <div class="card-content">
             <div class="row">
               <form name="createMoment" ng-submit="vm.submitMoment(vm.newMoment);" class="col s12">
@@ -19,11 +18,11 @@
                   <label for="text" data-error="wrong" data-success="right">T E X T</label>
                 </div>
                 <div class="col s12">
-                  <input ng-model="vm.newMoment.images" id="images" type="text" class="validate" autocomplete="off">
+                  <input ng-keyup="($event.keyCode === 192) ? vm.updateArray() : ''" ng-model="vm.newMoment.images[vm.accumulator]" id="images" type="text" class="validate" autocomplete="off">
                   <label for="images" data-error="wrong" data-success="right">I M A G E</label>
                 </div>
-                <div class="col s12">
-                  <img class="responsive-img" src="{{vm.newMoment.images}}" alt="">
+                <div ng-repeat="image in vm.newMoment.images" class="col s12">
+                  <img class="responsive-img" src="{{image}}" alt="">
                 </div>
                 <span  ng-show="vm.conflict ==='passwordError'" ><label class="conflict">User or password was incorrect, Please Try Again, or <u ng-click="vm.toggleValue = !vm.toggleValue">Sign Up Here</u></label></span>
                 <div class="col s12 btn-holder">
