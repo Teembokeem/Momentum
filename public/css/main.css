@@ -96,3 +96,9 @@ a, .btn {
 .conflict {
   color: #ff2218 ;
 }
+
+.edit-form {
+  position: fixed;
+  top:0;
+  left: 0;
+}

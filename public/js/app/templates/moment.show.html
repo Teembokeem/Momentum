@@ -13,8 +13,45 @@
           </div>
           <p>{{vm.selectedMoment.text}} </p>
           <br>
+          <button ng-click="vm.showForm = !vm.showForm" class="col btn grey darken-4">U P D A T E</button>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div ng-show="vm.showForm" class="edit-form z-depth-5">
+ <div class="row">
+   <div class="col m6 offset-m3">
+     <div class="sign-in-card card hoverable z-depth-3">
+       <div class="card-content">
+         <div class="row">
+           <form ng-submit="vm.updateMoment();" class="col s12">
+             <div class="col s12">
+               <input ng-model="vm.selectedMoment.title" id="title" type="text" class="validate">
+               <label for="title" data-error="wrong" data-success="right">T I T L E</label>
+             </div>
+             <div class="col s12">
+               <input ng-model="vm.selectedMoment.text" id="text" type="text" class="validate">
+               <label for="text" data-error="wrong" data-success="right">T E X T</label>
+             </div>
+             <div class="col s12">
+               <input ng-model="vm.selectedMoment.images" id="images" type="text" class="validate">
+               <label for="images" data-error="wrong" data-success="right">I M A G E</label>
+             </div>
+             <div class="col s12" ng-repeat="image in vm.selectedMoment.images">
+                <img class="z-depth-5" src="{{image}}" alt="">
+             </div>
+             <div class="col s12 btn-holder">
+               <button class="btn grey darken-4" type="submit">S U B M I T</button>
+             </div>
+             <div class="col s12 btn-holder">
+               <button ng-click="vm.showForm = !vm.showForm" class="btn grey darken-4" type="text">C A N C E L</button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
 </div>

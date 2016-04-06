@@ -41,7 +41,7 @@
       .state("moment.show", {
         url: "/{id}",
         templateUrl: "js/app/templates/moment.show.html"
-      });
+      })
 
     $urlRouterProvider.otherwise("/");
   }

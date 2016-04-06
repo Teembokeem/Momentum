@@ -15,6 +15,7 @@
     vm.moments;
     vm.selectedMoment;
     vm.conflict;
+    vm.showForm = false;
     vm.momentTemplate = {
       title: "",
       text: "",
@@ -26,6 +27,7 @@
     vm.transition   = transition;
     vm.submitMoment = submitMoment;
     vm.renderMoment = renderMoment;
+    vm.updateMoment = updateMoment;
 
     //functions
     function transition(state, data) {
@@ -42,10 +44,7 @@
       })
       .then(function(res) {
         $log.debug("successfully added moment", res.data)
-        grabMoments()
-        .then(function(res) {
-          transition('');
-        })
+        transition('.show', {"id": res.data._id})
       })
     };
 
@@ -58,7 +57,24 @@
       };
       vm.selectedMoment = vm.moments[index];
       $log.debug("your selected div:", vm.momentTemplate);
-      transition('.show', {"id": vm.moments[index]._id})
+      transition('.show', {"id": vm.selectedMoment._id});
+    }
+
+    function updateMoment() {
+      $log.debug(vm.selectedMoment)
+      $http({
+        method: "PUT",
+        url: "api/moments/" + vm.selectedMoment._id,
+        data: vm.selectedMoment
+      })
+      .then(
+        function(res) {
+          $log.debug("success!", res.data)
+          vm.showForm = !vm.showForm;
+        }, function(err) {
+          $log.debug("failure!", err)
+        }
+      );
     }
 
     function grabMoments() {
