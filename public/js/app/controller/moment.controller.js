@@ -124,7 +124,7 @@
   var scene       = new THREE.Scene(),
       light       = new THREE.AmbientLight(0xffffff),
       renderer,
-      camera      = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1500 ),
+      camera      = new THREE.PerspectiveCamera( 90,  window.innerWidth / window.innerHeight, 0.5, 1500 ),
       renderer    = new THREE.WebGLRenderer(),
       mouseX      = 0,
       mouseY      = 0,
@@ -138,17 +138,17 @@
     return Math.floor((Math.random() * (max - min)) + min )
   }
 
-  //A. DEFINE YOUR APEX/NADIR
- var momentApexNadir = [ 400, -400 ];
+ var momentApexNadir = [ 200, -200 ];
   var momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1])
 
   //B. DEFINE POLES
-  var momentPoles     = [ 160,  320 ];
+  var momentPoles     = [ 120,  190 ];
   var momentGirth     = momentPoles[1] - momentPoles[0];
 
   //C. DEFINE PARTITIONS
-  var numPartitions = 3;
+  var numPartitions = 50;
   var partitionParams = [];
+  var partitionRange;
   function createPartitions(n) {
     for ( var i = 0; i < n + 1; i++ ) {
       partitionParams.push(
@@ -158,11 +158,11 @@
         ]
       )
     };
+    partitionRange = partitionParams[0][1] - partitionParams[0][0];
   };
-  var partitionRange = partitionParams[0][1] - partitionParams[0][0];
 
   //D. DEFINE RINGS
-  var numRings = 5;
+  var numRings = 50;
   var ringParams = [];
   function createRings(n) {
     for ( var i = 0; i < n + 1; i++ ) {
@@ -177,55 +177,135 @@
 
 
   //E. "RANDOMLY" CHOOSE SECTOR
-  var numBodies = 10;
+  var numBodies = 20;
   var constellation = [];
+  var quadrantArray = [1, 1, -1, -1]
   function createConstellation(n) {
     for (var i = 0; i < n + 1; i++) {
       var constellationX = rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]);
       constellation.push(
         [
-          constellationX,
-          rng(partitionParams[i % partitionParams.length][1], partitionParams[i % partitionParams.length][0]),
-          Math.pow((Math.pow(partitionRange, 2) - Math.pow(constellationX, 2)) , 0.5)
+          quadrantArray[i % 4] * rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]),
+          quadrantArray[((i % 2) + 1)] * rng(partitionParams[i % partitionParams.length][1], partitionParams[i % partitionParams.length][0]),
+          quadrantArray[((i % 2) + 1)] * Math.pow((Math.pow(ringParams[i % ringParams.length][1], 2) - Math.pow(constellationX, 2)) , 0.5)
         ])
-    }
+    };
+    constellation.push([0, momentApexNadir[0], 0])
+    constellation.push([0, momentApexNadir[1], 0])
+  };
+
+  //F. CALCULATE DISTANCES OF LINES FROM POINT A TO POINT B, SELF-EXCLUDED
+  var radiiArray = [];
+  function prepRadiiArray(array) {
+      for ( var i = 0; i < array.length; i++) {
+          radiiArray.push([])
+      }
+  };
+
+  function detectRadii(array) {
+    console.log("constellation in here:", constellation)
+    console.log("prep radiiaray in here:", radiiArray)
+    for (var i = 0; i < array.length; i ++) {
+     for (var j = 0; j < array.length; j ++) {
+      if (i !== j) radiiArray[i].push(
+        [
+          i,
+          j,
+          Math.pow(Math.pow( (array[j][0] - array[i][0]) , 2) + Math.pow( (array[j][1] - array[i][1]) , 2) + Math.pow( (array[j][2] - array[i][2]) , 2) , 0.5)
+        ]
+      );
+      }
+      radiiArray[i].sort(function(a, b) {
+        if (Math.abs(a[2]) > Math.abs(b[2])) {
+          return 1;
+        }
+        if (Math.abs(a[2]) < Math.abs(b[2])) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      })
+    };
   }
 
-  geometry.vertices.push(
-    new THREE.Vector3(   0,  100,   0 ),
-    new THREE.Vector3(   0, -100,   0 ),
-    new THREE.Vector3(  8 * Math.pow(2, 0.5), 0, 8 * Math.pow(2, 0.5) ),
-    new THREE.Vector3(   -8 * Math.pow(2, 0.5), 0,  8 * Math.pow(2, 0.5) ),
-    new THREE.Vector3(   0, 0,   -16 ),
-    new THREE.Vector3(  -8 * Math.pow(2, 0.5), 0, -8 * Math.pow(2, 0.5) ),
-    new THREE.Vector3(  8 * Math.pow(2, 0.5), 0, -8 * Math.pow(2, 0.5) ),
+  // var momentLines = [];
+  // function minLines(array) {
+  //   for (var i = 0; i < array.length - 1; i++) {
+  //     for (var j = 0; i < array.length - 1; i ++) {
+  //       momentLines.push(
+  //         [
+  //           i,
+  //           j,
+  //           radiiArray[i].sort(function(a, b) {
+  //             if (a[2] > b[2]) {
+  //               return 1;
+  //             }
+  //             if (a[2] < b[2]) {
+  //               return -1;
+  //             }
+  //             // a must be equal to b
+  //             return 0;
+  //           })
 
-    // new THREE.Vector3(  10 * Math.pow(2, 0.5), 0, 10 * Math.pow(2, 0.5) ),
-    // new THREE.Vector3(   -10 * Math.pow(2, 0.5), 0,  10 * Math.pow(2, 0.5) ),
-    new THREE.Vector3(   0, 40,   20 )
+
+  //         ]
+  //       )
+  //     }
+  //   }
+  // }
+
+createPartitions(numPartitions);
+createRings(numRings);
+createConstellation(numBodies);
+prepRadiiArray(constellation);
+detectRadii(constellation);
+createFaces(radiiArray);
+createVertices(constellation);
+  console.log("log of distances in order", radiiArray)
+  console.log("your constellation", constellation)
+  console.log("your faces", geometry.faces, "vertices", geometry.vertices)
+
+function createVertices(array) {
+  for (var i = 0; i < array.length; i++) {
+    geometry.vertices.push(
+      new THREE.Vector3( constellation[i][0],  constellation[i][1], constellation[i][2] )
+    );
+  }
+}
 
 
-  );
+function createFaces(array) {
+  console.log(array)
+  for (var i = 0; i < 2; i++) {
+    for (var j = 0; j < array[i].length - 1; j++) {
+      console.log(array[i][j])
+      geometry.faces.push(
+        new THREE.Face3(array[array.length - 2 + i][j % array[i].length][0], array[array.length - 2 + i][j % array[i].length][1], array[array.length - 2 + i][j % array[i].length + 1][1])
+      );
+    }
+  }
+};
 
-  geometry.faces.push(
-     new THREE.Face3( 0, 2, 3 ),
-     new THREE.Face3( 0, 3, 5 ),
-     new THREE.Face3( 0, 5, 4 ),
-     new THREE.Face3( 0, 4, 6 ),
-     new THREE.Face3( 0, 6, 2 ),
-     new THREE.Face3( 0, 7, 3 ),
-     new THREE.Face3( 0, 7, 2 ),
-     new THREE.Face3( 1, 2, 3 ),
-     new THREE.Face3( 1, 3, 5 ),
-     new THREE.Face3( 1, 5, 4 ),
-     new THREE.Face3( 1, 4, 6 ),
-     new THREE.Face3( 1, 6, 2 )
-     );
+
+  // geometry.faces.push(
+  //    new THREE.Face3( 0, 2, 3 ),
+  //    new THREE.Face3( 0, 3, 5 ),
+  //    new THREE.Face3( 0, 5, 4 ),
+  //    new THREE.Face3( 0, 4, 6 ),
+  //    new THREE.Face3( 0, 6, 2 ),
+  //    new THREE.Face3( 0, 7, 3 ),
+  //    new THREE.Face3( 0, 7, 2 ),
+  //    new THREE.Face3( 1, 2, 3 ),
+  //    new THREE.Face3( 1, 3, 5 ),
+  //    new THREE.Face3( 1, 5, 4 ),
+  //    new THREE.Face3( 1, 4, 6 ),
+  //    new THREE.Face3( 1, 6, 2 )
+  //    );
 
   var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube, light );
-  camera.position.z = 500;
+  camera.position.z = 300;
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -248,8 +328,7 @@
 
     renderer.render( scene, camera );
     document.getElementById("momentum").appendChild(renderer.domElement);
-    renderer.setSize( 1000, 450);
-  }
+    renderer.setSize( window.innerWidth, window.innerHeight );  }
   };
 
 })();

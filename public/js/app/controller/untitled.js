@@ -58,24 +58,66 @@
 
   //F. CALCULATE DISTANCES OF LINES FROM POINT A TO POINT B, SELF-EXCLUDED
   var radiiArray = [];
+  function prepRadiiArray(array) {
+      for ( var i = 0; i < array.length - 1; i++) {
+          radiiArray.push([])
+      }
+  };
+
   function detectRadii(array) {
     for (var i = 0; i < array.length - 1; i ++) {
      for (var j = 0; j < array.length - 1; j ++) {
-      if (i !== j)
-      radiiArray.push(
+      if (i !== j) radiiArray[i].push(
         [
           i,
           j,
           Math.pow(Math.pow( (array[j][0] - array[i][0]) , 2) + Math.pow( (array[j][1] - array[i][1]) , 2) + Math.pow( (array[j][2] - array[i][2]) , 2) , 0.5)
         ]
       );
-
-     }
+      }
+      radiiArray[i].sort(function(a, b) {
+        if (a[2] > b[2]) {
+          return 1;
+        }
+        if (a[2] < b[2]) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      })
     };
   }
+
+  // var momentLines = [];
+  // function minLines(array) {
+  //   for (var i = 0; i < array.length - 1; i++) {
+  //     for (var j = 0; i < array.length - 1; i ++) {
+  //       momentLines.push(
+  //         [
+  //           i,
+  //           j,
+  //           radiiArray[i].sort(function(a, b) {
+  //             if (a[2] > b[2]) {
+  //               return 1;
+  //             }
+  //             if (a[2] < b[2]) {
+  //               return -1;
+  //             }
+  //             // a must be equal to b
+  //             return 0;
+  //           })
+
+
+  //         ]
+  //       )
+  //     }
+  //   }
+  // }
 
 createPartitions(numPartitions);
 createRings(numRings);
 createConstellation(numBodies);
-detectRadii(constellation, 0)
+prepRadiiArray(constellation);
+detectRadii(constellation)
   console.log(radiiArray)
+
