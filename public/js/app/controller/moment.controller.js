@@ -133,73 +133,99 @@
 
   //MOMENT CREATION
   var geometry;
-
-  //RANDOMIZER UTILITY
-  function rng(max, min, bool) {
-    if (bool) return Math.floor((Math.random() * (max - min)) + min);
-    else return (Math.random() * (max - min)) + min;
-  };
-
-  //MOMENT VARIABLES
-    //ensures, width is is never the height: no squares
-  var momentFactor    = rng(0.75, 0.5, false);
-    //defines bounding vertices for the gem (y-direction)
-  var momentApexNadir = [ rng(200, 100, true), -(rng(200, 100, true)) ];
-    //defines outermost bound along the length of the moment
-  var momentPole      = Math.floor(momentApexNadir[0] * momentFactor);
-    //TODO: need to sengment momentPole into n sections and push randomly into array, tRings argument should end up being num
-  var tRings = [];
-  function tRingsGenerator() {
-    tRings.push(rng(5))
+  geometry = new THREE.Geometry();
+  var rng = function(max, min) {
+    return Math.floor((Math.random() * (max - min)) + min )
   }
 
-  console.log(tRings)
+  //A. DEFINE YOUR APEX/NADIR
+ var momentApexNadir = [ 400, -400 ];
+  var momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1])
 
-  $log.debug("your apex and nadir:", momentApexNadir)
-  $log.debug("your pole:", momentPole)
+  //B. DEFINE POLES
+  var momentPoles     = [ 160,  320 ];
+  var momentGirth     = momentPoles[1] - momentPoles[0];
 
-  // function boundingCircles(squaredRadius) {
-  //   $log.info("Creating our paired coordinates")
-  //   var x = rng(squaredRadius, 0, true);
-  //   $log.info("Randomized x value: should be greater than 0 and less than " + squaredRadius + ":", x);
-  //   var z = (function(compCoordinate) {
-  //     var num;
-  //     return num > Math.pow(((momentPole / 5) + (momentPole / 5) / 3) - x, 0.5 ) &&
-  //   })
-  //   $log.info("Randomized x value: should be greater than 0 and less than " + squaredRadius + ":", x);
+  //C. DEFINE PARTITIONS
+  var numPartitions = 3;
+  var partitionParams = [];
+  function createPartitions(n) {
+    for ( var i = 0; i < n + 1; i++ ) {
+      partitionParams.push(
+        [
+          momentApexNadir[1] + (i * (momentRange / ( n+1 ))),
+          momentApexNadir[1] + ((i + 1) * (momentRange / ( n+1 )))
+        ]
+      )
+    };
+  };
+  var partitionRange = partitionParams[0][1] - partitionParams[0][0];
 
-  // }
-
-
-  var points = [
-    new THREE.Vector3(   0,  momentApexNadir[0],   0 ),
-    new THREE.Vector3(   0, momentApexNadir[1],   0 ),
-    new THREE.Vector3(   -momentPole, -rng(momentApexNadir[0] - 20, momentApexNadir[0] - 50, true),   momentPole ),
-    new THREE.Vector3(   momentPole, -rng(momentApexNadir[0] - 20, momentApexNadir[0] - 50, true),   -momentPole ),
-    new THREE.Vector3(   -momentPole, rng(momentApexNadir[0] - 50, momentApexNadir[0] - 40, true),   -momentPole ),
-    new THREE.Vector3(   momentPole, rng(momentApexNadir[0] - 80, momentApexNadir[0] - 80, true),   momentPole ),
-    new THREE.Vector3(   -momentPole, -rng(momentApexNadir[0] -  50, momentApexNadir[0] -70, true),   momentPole ),
-    new THREE.Vector3(   momentPole, -rng(momentApexNadir[0] - 100, momentApexNadir[0] - 120, true),   -momentPole ),
-    new THREE.Vector3(   -momentPole, rng(momentApexNadir[0] - 100, momentApexNadir[0] - 120, true),   -momentPole ),
-    new THREE.Vector3(   momentPole, rng(momentApexNadir[0] - 100, momentApexNadir[0] - 120, true),   momentPole )
-  ];
-
-  // console.log("your vertices:", geometry.vertices[2], geometry.vertices[3], geometry.vertices[4], geometry.vertices[5])
-
-  // geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
-  // geometry.faces.push( new THREE.Face3( 0, 1, 3 ) );
-  // geometry.faces.push( new THREE.Face3( 0, 1, 4 ) );
-  // geometry.faces.push( new THREE.Face3( 0, 1, 5 ) );
+  //D. DEFINE RINGS
+  var numRings = 5;
+  var ringParams = [];
+  function createRings(n) {
+    for ( var i = 0; i < n + 1; i++ ) {
+      ringParams.push(
+        [
+          momentPoles[0] + (i * (momentGirth / ( n+1 ))),
+          momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 )))
+        ]
+      )
+    };
+  };
 
 
-  // geometry.computeBoundingSphere();
-  geometry = new THREE.ConvexGeometry( points );
+  //E. "RANDOMLY" CHOOSE SECTOR
+  var numBodies = 10;
+  var constellation = [];
+  function createConstellation(n) {
+    for (var i = 0; i < n + 1; i++) {
+      var constellationX = rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]);
+      constellation.push(
+        [
+          constellationX,
+          rng(partitionParams[i % partitionParams.length][1], partitionParams[i % partitionParams.length][0]),
+          Math.pow((Math.pow(partitionRange, 2) - Math.pow(constellationX, 2)) , 0.5)
+        ])
+    }
+  }
+
+  geometry.vertices.push(
+    new THREE.Vector3(   0,  100,   0 ),
+    new THREE.Vector3(   0, -100,   0 ),
+    new THREE.Vector3(  8 * Math.pow(2, 0.5), 0, 8 * Math.pow(2, 0.5) ),
+    new THREE.Vector3(   -8 * Math.pow(2, 0.5), 0,  8 * Math.pow(2, 0.5) ),
+    new THREE.Vector3(   0, 0,   -16 ),
+    new THREE.Vector3(  -8 * Math.pow(2, 0.5), 0, -8 * Math.pow(2, 0.5) ),
+    new THREE.Vector3(  8 * Math.pow(2, 0.5), 0, -8 * Math.pow(2, 0.5) ),
+
+    // new THREE.Vector3(  10 * Math.pow(2, 0.5), 0, 10 * Math.pow(2, 0.5) ),
+    // new THREE.Vector3(   -10 * Math.pow(2, 0.5), 0,  10 * Math.pow(2, 0.5) ),
+    new THREE.Vector3(   0, 40,   20 )
+
+
+  );
+
+  geometry.faces.push(
+     new THREE.Face3( 0, 2, 3 ),
+     new THREE.Face3( 0, 3, 5 ),
+     new THREE.Face3( 0, 5, 4 ),
+     new THREE.Face3( 0, 4, 6 ),
+     new THREE.Face3( 0, 6, 2 ),
+     new THREE.Face3( 0, 7, 3 ),
+     new THREE.Face3( 0, 7, 2 ),
+     new THREE.Face3( 1, 2, 3 ),
+     new THREE.Face3( 1, 3, 5 ),
+     new THREE.Face3( 1, 5, 4 ),
+     new THREE.Face3( 1, 4, 6 ),
+     new THREE.Face3( 1, 6, 2 )
+     );
 
   var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
   var cube = new THREE.Mesh( geometry, material );
   scene.add( cube, light );
   camera.position.z = 500;
-
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -216,13 +242,13 @@
     // camera.position.x += ( mouseX - camera.position.x );
     // camera.position.y += ( - mouseY - camera.position.y );
     // camera.lookAt( scene.position );
-    cube.rotation.y += 0.001;
+    cube.rotation.y += 0.007;
 
     // console.log(cubic-bezier(.17,.67,.83,.67))
 
     renderer.render( scene, camera );
     document.getElementById("momentum").appendChild(renderer.domElement);
-    renderer.setSize( 600, 370);
+    renderer.setSize( 1000, 450);
   }
   };
 
