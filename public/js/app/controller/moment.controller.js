@@ -42,7 +42,6 @@
     function transition(state, data) {
       $state.go("moment" + state, data)
         .then(function() {
-          $log.debug("where are you moment...", document.getElementById("momentum"))
           if (state === '.create') {
              angular.element( document.querySelector( '#momentum' ) ).append( renderer.domElement)
           } else {
@@ -53,20 +52,17 @@
     };
 
     function updateArray() {
-      $log.debug("clicked up")
       vm.newMoment.images[vm.accumulator] = vm.newMoment.images[vm.accumulator].substring(0, vm.newMoment.images[vm.accumulator].length - 1);
       vm.accumulator++
     }
     //functions
     function submitMoment(data) {
-      $log.debug("posting!", data);
       $http({
         method: 'POST',
         url: "api/moments",
         data: data
       })
       .then(function(res) {
-        $log.debug("successfully added moment", res.data)
         transition('.show', {"id": res.data._id})
       })
     };
@@ -79,12 +75,10 @@
         date:   vm.moments[index].createdAt
       };
       vm.selectedMoment = vm.moments[index];
-      $log.debug("your selected div:", vm.momentTemplate);
       transition('.show', {"id": vm.selectedMoment._id});
     }
 
     function updateMoment() {
-      $log.debug(vm.selectedMoment)
       $http({
         method: "PUT",
         url:    "api/moments/" + vm.selectedMoment._id,
@@ -92,10 +86,8 @@
       })
       .then(
         function(res) {
-          $log.debug("success!", res.data)
           vm.showForm = !vm.showForm;
         }, function(err) {
-          $log.debug("failure!", err)
         }
       );
     }
@@ -132,44 +124,40 @@
 //VARIABLES FOR CRYSTAL SYNTHESIS
   //A. DEFINE CRYSTAL APEX AND NADIR
   var momentApexNadir = [ 100, -100 ],
-      momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1])
+      momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1]),
 
   //B. DEFINE LATERAL POLES
-  var momentPoles     = [ 0,  100 ];
-  var momentGirth     = momentPoles[1] - momentPoles[0];
+      momentPoles     = [ 0,  100 ],
+      momentGirth     = momentPoles[1] - momentPoles[0],
   //C.a Partition vars
-  var numPartitions   = rng(10,0);
-  var partitionParams = [];
-  var partitionRange;
+      numPartitions   = rng(10,0),
+      partitionParams = [],
+      partitionRange,
   //D.a Ring vars
-  var numRings = rng(10, 0);
-  var ringParams = [];
+      numRings        = rng(10, 0),
+      ringParams      = [],
   //E.a Constellation vars
-  var numBodies = rng(3, 0);
-  var constellation = [];
-  var quadrantArray = [1, 1, -1, -1]
+      numBodies       = rng(3, 0),
+      constellation   = [],
+      quadrantArray   = [1, 1, -1, -1],
   //F.a THREE.js vars
-  var convexarray = [];
-  //G.a Gemometry ars
-  var geometry;
-  var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
+      convexarray     = [],
+  //G.a Gemometry vars
+      geometry,
+      material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
 
 //MOMENT CREATION
-  function rng(max, min) {
-    return Math.floor((Math.random() * (max - min)) + min )
-  };
 
-  function render() {
-    requestAnimationFrame(render);
-    update(vm.testVal)
-    renderer.render( scene, camera );
-    // $log.info(cube.rotation.y)
-    // $log.debug(".....");
-    if (document.getElementsByTagName("p") !== undefined) {
-      document.getElementById("momentum").appendChild( renderer.domElement)
-    }
-    scene.children[0].rotation.y += 0.050;
-  }
+  //G.b FUNCTION CALLS
+  createPartitions(numPartitions);
+  createRings(numRings);
+  createConstellation(numBodies);
+  createVertices(constellation);
+  geometry = new THREE.ConvexGeometry( convexarray );
+  var cube = new THREE.Mesh( geometry, material );
+  scene.add( cube );
+  requestAnimationFrame(render);
+
 
   //C.b DEFINE PARTITIONS
   function createPartitions(n) {
@@ -233,26 +221,27 @@
       }
     }
 
+    //HELPERS
+    function rng(max, min) {
+      return Math.floor((Math.random() * (max - min)) + min )
+    };
 
-    createPartitions(numPartitions);
-    createRings(numRings);
-    createConstellation(numBodies);
-    createVertices(constellation);
-
-    //G.b CREATE GEOMETRY INSTANCE
-    geometry = new THREE.ConvexGeometry( convexarray );
-    var cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
-    requestAnimationFrame(render);
+    function render() {
+      requestAnimationFrame(render);
+      update(vm.testVal)
+      renderer.render( scene, camera );
+      if (document.getElementsByTagName("p") !== undefined) {
+        document.getElementById("momentum").appendChild( renderer.domElement)
+      }
+      scene.children[0].rotation.y += 0.050;
+    };
 
     function update(a) {
       if (a === true && vm.keyEvent !== 8) {
-        var currentRotation = scene.children[0].rotation.y;
-        $log.debug("your scene", scene.children[0])
+        vm.testVal = false;
+        var someVal         = rng(4,0),
+            currentRotation = scene.children[0].rotation.y;
         scene.remove(scene.children[0]);
-
-        var someVal = rng(4,0);
-              $log.debug("convex array before:", convexarray.length)
 
         for (var i = 0; i < 1; i++) {
           var constellationX = rng(momentApexNadir[1], momentApexNadir[0]);
@@ -264,41 +253,29 @@
             )
           )
         }
-        $log.debug("convex array after:",  convexarray.length)
-        geometry     = new THREE.ConvexGeometry( convexarray );
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, vertexColors: THREE.FaceColors } );
-        var cube     = new THREE.Mesh( geometry, material );
-        scene.add( cube );
 
-        $log.debug("inside update!")
-        $log.debug(scene)
-        vm.testVal = false;
-        $log.debug(scene.children)
+        geometry        = new THREE.ConvexGeometry( convexarray );
+        material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, vertexColors: THREE.FaceColors } );
+        cube            = new THREE.Mesh( geometry, material );
+        scene.add( cube );
         scene.children[0].rotation.y = currentRotation;
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
             new THREE.Color( 0xff0000 ),
             new THREE.Color( 0xff0000 ),
             new THREE.Color( 0xff0000 )
-            )
+          )
         })
       } else if (a === true && vm.keyEvent === 8 && convexarray.length > 4) {
-
-        var currentRotation = scene.children[0].rotation.y;
-        scene.remove(scene.children[0]);
-        $log.debug("convex array before:", convexarray, convexarray.length)
-        convexarray.splice(convexarray.length - 1, 1);
-        $log.debug("convex array before:", convexarray, convexarray.length)
-        vm.testVal   = !vm.testVal;
-        var geometry = new THREE.ConvexGeometry( convexarray );
-        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-        var cube     = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-
-        $log.debug("inside update!")
-        $log.debug(scene)
         vm.testVal  = false;
         vm.keyEvent = '';
+        var currentRotation = scene.children[0].rotation.y;
+        scene.remove(scene.children[0]);
+        convexarray.splice(convexarray.length - 1, 1);
+        geometry = new THREE.ConvexGeometry( convexarray );
+        material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+        cube     = new THREE.Mesh( geometry, material );
+        scene.add( cube );
         scene.children[0].rotation.y = currentRotation;
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
@@ -310,7 +287,7 @@
       } else {
         vm.testVal = false;
       }
-    }
+    };
   };
 })();
 
