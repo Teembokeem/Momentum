@@ -162,7 +162,7 @@
       requestAnimationFrame(render);
     } else {
       scene.remove(scene.children[0])
-
+      $log.info(scene.children)
       createVertices(vm.selectedMoment.constellation )
       geometry = new THREE.ConvexGeometry( chosenMoment );
       cube = new THREE.Mesh( geometry, material );
@@ -251,7 +251,7 @@
       requestAnimationFrame(render);
       update(vm.testVal)
       renderer.render( scene, camera );
-      if (document.getElementsByTagName("p") !== undefined) {
+      if (document.getElementsByTagName("canvas") !== undefined) {
         document.getElementById("momentum").appendChild( renderer.domElement)
       }
       scene.children[0].rotation.y += 0.005;
@@ -266,6 +266,7 @@
             currentRotationY = scene.children[0].rotation.y;
             // currentRotationX = scene.children[0].rotation.x;
         scene.remove(scene.children[0]);
+        $log.info(scene.children)
 
         for (var i = 0; i < 1; i++) {
           var constellationX = rng(momentPoles[1], momentPoles[0]);
@@ -283,7 +284,6 @@
         cube            = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotationY;
-        scene.children[0].position.set( -200, 0 , 0);
         // scene.children[0].rotation.x = currentRotationX;
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
@@ -303,7 +303,6 @@
         cube     = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotation;
-        scene.children[0].position.set( -200, 0 , 0);
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
             new THREE.Color( 0xff0000 ),

@@ -8,7 +8,7 @@
           <div ng-hide="vm.showForm">
           <h1>{{vm.selectedMoment.title.toUpperCase();}} </h1>
           <br>
-            <img ng-repeat="image in vm.selectedMoment.images" class="col s8" src="{{image}}" alt="">
+            <img ng-repeat="image in vm.selectedMoment.images" class="col s4" src="{{image}}" alt="">
           <p>{{vm.selectedMoment.text}} </p>
           <br>
           <button ng-click="vm.showForm = !vm.showForm" class="col offset-s4 btn grey darken-4">U P D A T E</button>
