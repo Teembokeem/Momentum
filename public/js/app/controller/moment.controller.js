@@ -43,6 +43,11 @@
       console.log("state chosen:", state ? state : "main")
       $state.go("moment" + state, data);
       if (state === '.create') {
+        createPartitions(numPartitions);
+        console.log(partitionParams)
+        createRings(numRings);
+        console.log(ringParams)
+        createConstellation(numBodies);
         render();
       } else {
         $('canvas').remove();
@@ -132,21 +137,20 @@
       windowHalfY = window.innerHeight / 2;
 
   //MOMENT CREATION
-  var geometry;
-  geometry = new THREE.Geometry();
+  vm.testVal = false;
   var rng = function(max, min) {
     return Math.floor((Math.random() * (max - min)) + min )
   }
 
- var momentApexNadir = [ 200, -200 ];
+  var momentApexNadir = [ 100, -100 ];
   var momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1])
 
   //B. DEFINE POLES
-  var momentPoles     = [ 120,  190 ];
+  var momentPoles     = [ 0,  100 ];
   var momentGirth     = momentPoles[1] - momentPoles[0];
 
   //C. DEFINE PARTITIONS
-  var numPartitions = 50;
+  var numPartitions = rng(10,0);
   var partitionParams = [];
   var partitionRange;
   function createPartitions(n) {
@@ -162,7 +166,7 @@
   };
 
   //D. DEFINE RINGS
-  var numRings = 50;
+  var numRings = rng(10, 0);
   var ringParams = [];
   function createRings(n) {
     for ( var i = 0; i < n + 1; i++ ) {
@@ -170,6 +174,10 @@
         [
           momentPoles[0] + (i * (momentGirth / ( n+1 ))),
           momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 )))
+        ],
+        [
+          -(momentPoles[0] + (i * (momentGirth / ( n+1 )))),
+          -(momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 ))))
         ]
       )
     };
@@ -177,7 +185,7 @@
 
 
   //E. "RANDOMLY" CHOOSE SECTOR
-  var numBodies = 20;
+  var numBodies = rng(3, 0);
   var constellation = [];
   var quadrantArray = [1, 1, -1, -1]
   function createConstellation(n) {
@@ -185,122 +193,55 @@
       var constellationX = rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]);
       constellation.push(
         [
-          quadrantArray[i % 4] * rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]),
+          quadrantArray[i % 4] *         rng(ringParams[i % ringParams.length][1], ringParams[i % ringParams.length][0]),
           quadrantArray[((i % 2) + 1)] * rng(partitionParams[i % partitionParams.length][1], partitionParams[i % partitionParams.length][0]),
           quadrantArray[((i % 2) + 1)] * Math.pow((Math.pow(ringParams[i % ringParams.length][1], 2) - Math.pow(constellationX, 2)) , 0.5)
         ])
     };
     constellation.push([0, momentApexNadir[0], 0])
     constellation.push([0, momentApexNadir[1], 0])
+    constellation.sort(function(a, b) {
+      if (a[1] > b[1]) {
+        return 1;
+      }
+      if (a[1] < b[1]) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    })
   };
 
-  //F. CALCULATE DISTANCES OF LINES FROM POINT A TO POINT B, SELF-EXCLUDED
-  var radiiArray = [];
-  function prepRadiiArray(array) {
-      for ( var i = 0; i < array.length; i++) {
-          radiiArray.push([])
-      }
-  };
-
-  function detectRadii(array) {
-    console.log("constellation in here:", constellation)
-    console.log("prep radiiaray in here:", radiiArray)
-    for (var i = 0; i < array.length; i ++) {
-     for (var j = 0; j < array.length; j ++) {
-      if (i !== j) radiiArray[i].push(
-        [
-          i,
-          j,
-          Math.pow(Math.pow( (array[j][0] - array[i][0]) , 2) + Math.pow( (array[j][1] - array[i][1]) , 2) + Math.pow( (array[j][2] - array[i][2]) , 2) , 0.5)
-        ]
-      );
-      }
-      radiiArray[i].sort(function(a, b) {
-        if (Math.abs(a[2]) > Math.abs(b[2])) {
-          return 1;
-        }
-        if (Math.abs(a[2]) < Math.abs(b[2])) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      })
-    };
-  }
-
-  // var momentLines = [];
-  // function minLines(array) {
-  //   for (var i = 0; i < array.length - 1; i++) {
-  //     for (var j = 0; i < array.length - 1; i ++) {
-  //       momentLines.push(
-  //         [
-  //           i,
-  //           j,
-  //           radiiArray[i].sort(function(a, b) {
-  //             if (a[2] > b[2]) {
-  //               return 1;
-  //             }
-  //             if (a[2] < b[2]) {
-  //               return -1;
-  //             }
-  //             // a must be equal to b
-  //             return 0;
-  //           })
-
-
-  //         ]
-  //       )
-  //     }
-  //   }
-  // }
-
-createPartitions(numPartitions);
-createRings(numRings);
-createConstellation(numBodies);
-prepRadiiArray(constellation);
-detectRadii(constellation);
-createFaces(radiiArray);
-createVertices(constellation);
-  console.log("log of distances in order", radiiArray)
-  console.log("your constellation", constellation)
-  console.log("your faces", geometry.faces, "vertices", geometry.vertices)
-
-function createVertices(array) {
-  for (var i = 0; i < array.length; i++) {
-    geometry.vertices.push(
-      new THREE.Vector3( constellation[i][0],  constellation[i][1], constellation[i][2] )
-    );
-  }
-}
-
-
-function createFaces(array) {
-  console.log(array)
-  for (var i = 0; i < 2; i++) {
-    for (var j = 0; j < array[i].length - 1; j++) {
-      console.log(array[i][j])
-      geometry.faces.push(
-        new THREE.Face3(array[array.length - 2 + i][j % array[i].length][0], array[array.length - 2 + i][j % array[i].length][1], array[array.length - 2 + i][j % array[i].length + 1][1])
+  var convexarray = [];
+  function createVertices(array) {
+    for (var i = 0; i < array.length; i++) {
+      convexarray.push(
+        new THREE.Vector3( constellation[i][0],  constellation[i][1], constellation[i][2] )
       );
     }
   }
-};
 
 
-  // geometry.faces.push(
-  //    new THREE.Face3( 0, 2, 3 ),
-  //    new THREE.Face3( 0, 3, 5 ),
-  //    new THREE.Face3( 0, 5, 4 ),
-  //    new THREE.Face3( 0, 4, 6 ),
-  //    new THREE.Face3( 0, 6, 2 ),
-  //    new THREE.Face3( 0, 7, 3 ),
-  //    new THREE.Face3( 0, 7, 2 ),
-  //    new THREE.Face3( 1, 2, 3 ),
-  //    new THREE.Face3( 1, 3, 5 ),
-  //    new THREE.Face3( 1, 5, 4 ),
-  //    new THREE.Face3( 1, 4, 6 ),
-  //    new THREE.Face3( 1, 6, 2 )
-  //    );
+  createPartitions(numPartitions);
+  console.log(partitionParams)
+  createRings(numRings);
+  console.log(ringParams)
+  createConstellation(numBodies);
+    console.log("your constellation", constellation)
+  // prepRadiiArray(constellation);
+  // detectRadii(constellation);
+    // console.log("log of distances in order", radiiArray)
+
+  //SET UP GEOMETRY CONSTRUCTOR
+
+  var geometry;
+
+  // createFaces(radiiArray, constellation);
+  createVertices(constellation);
+    // console.log("your faces", geometry.faces, "vertices", geometry.vertices)
+
+  geometry = new THREE.ConvexGeometry( convexarray );
+
 
   var material = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
   var cube = new THREE.Mesh( geometry, material );
@@ -309,21 +250,91 @@ function createFaces(array) {
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
-
-  requestAnimationFrame(render);
-
   function onDocumentMouseMove( event ) {
-          mouseX = ( event.clientX - windowHalfX );
-          mouseY = ( event.clientY - windowHalfY );
-        }
+    mouseX = ( event.clientX - windowHalfX );
+    mouseY = ( event.clientY - windowHalfY );
+  }
 
+  function update(a) {
+    if (a === true && vm.keyEvent !== 8) {
+      var currentRotation = scene.children[0].rotation.y;
+      scene.remove(scene.children[0]);
+
+      $log.debug("your scene", scene.children[0])
+      var someVal = rng(4,0);
+            $log.debug("convex array before:", convexarray.length)
+
+      for (var i = 0; i < 1; i++) {
+        var constellationX = rng(momentApexNadir[1], momentApexNadir[0]);
+        convexarray.push(
+          new THREE.Vector3(
+            quadrantArray[someVal % 4] *         rng(momentApexNadir[1], momentApexNadir[0]),
+            quadrantArray[((someVal % 2) + 1)] * rng(momentPoles[1], momentPoles[0]),
+            quadrantArray[((someVal % 2) + 1)] * Math.pow((Math.pow(momentApexNadir[1], 2) - Math.pow(constellationX, 2)) , 0.5)
+          )
+        )
+      }
+      $log.debug("convex array after:",  convexarray.length)
+      var geometry = new THREE.ConvexGeometry( convexarray );
+      var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, vertexColors: THREE.FaceColors } );
+      var cube = new THREE.Mesh( geometry, material );
+      scene.add( cube );
+
+      $log.debug("inside update!")
+      $log.debug(scene)
+      vm.testVal = false;
+      scene.children[0].rotation.y = currentRotation;
+      scene.children[0].geometry.faces.forEach(function(face) {
+        face.vertexColors.push(
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 )
+
+          )
+      })
+    } else if (a === true && vm.keyEvent === 8 && convexarray.length > 4) {
+
+      var currentRotation = scene.children[0].rotation.y;
+      scene.remove(scene.children[0]);
+      $log.debug("convex array before:", convexarray, convexarray.length)
+      convexarray.splice(convexarray.length - 1, 1);
+      $log.debug("convex array before:", convexarray, convexarray.length)
+      vm.testVal = !vm.testVal;
+      var geometry = new THREE.ConvexGeometry( convexarray );
+      var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, vertexColors: THREE.FaceColors } );
+      var cube = new THREE.Mesh( geometry, material );
+      scene.add( cube );
+
+      $log.debug("inside update!")
+      $log.debug(scene)
+      vm.testVal = false;
+      vm.keyEvent = '';
+      scene.children[0].rotation.y = currentRotation;
+      scene.children[0].geometry.faces.forEach(function(face) {
+        face.vertexColors.push(
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 )
+
+          )
+      })
+      // $log.debug("passing over.")
+    } else {
+      vm.testVal = false;
+
+    }
+  }
+  requestAnimationFrame(render);
   function render() {
+    // $log.debug(geometry)
     requestAnimationFrame( render );
+    update(vm.testVal)
     // camera.position.x += ( mouseX - camera.position.x );
     // camera.position.y += ( - mouseY - camera.position.y );
     // camera.lookAt( scene.position );
-    cube.rotation.y += 0.007;
+    scene.children[0].rotation.y += 0.007;    // $log.debug("convex array after:",  convexarray.length)
 
+    // $log.debug("running....", geometry)
     // console.log(cubic-bezier(.17,.67,.83,.67))
 
     renderer.render( scene, camera );

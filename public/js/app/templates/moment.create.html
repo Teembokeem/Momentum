@@ -10,8 +10,11 @@
             <div class="row">
               <form name="createMoment" ng-submit="vm.submitMoment(vm.newMoment);" class="col s12">
                 <div class="col s12">
-                  <input required ng-model="vm.newMoment.title" id="title" type="text" class="validate" autocomplete="off">
+                  <input required ng-model="vm.newMoment.title" id="title" type="text" class="validate" ng-keyup="vm.testVal = !vm.testVal; vm.keyEvent = $event.keyCode" autocomplete="off">
                   <label for="title" data-error="wrong" data-success="right">T I T L E</label>
+                </div>
+                <div class="col s12 btn-holder">
+                  <a ng-click="vm.testVal = !vm.testVal" class="btn grey darken-4">{{vm.testVal === false ? "YES" : "NO"}}</a>
                 </div>
                 <div class="col s12">
                   <input required ng-model="vm.newMoment.text" id="text" type="text" class="validate" autocomplete="off">
