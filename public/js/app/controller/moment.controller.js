@@ -255,6 +255,7 @@
         document.getElementById("momentum").appendChild( renderer.domElement)
       }
       scene.children[0].rotation.y += 0.005;
+      scene.children[0].position.set( -200, 0 , 0);
       // scene.children[0].rotation.x += 0.00;
     };
 
@@ -282,6 +283,7 @@
         cube            = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotationY;
+        scene.children[0].position.set( -200, 0 , 0);
         // scene.children[0].rotation.x = currentRotationX;
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
@@ -301,6 +303,7 @@
         cube     = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotation;
+        scene.children[0].position.set( -200, 0 , 0);
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
             new THREE.Color( 0xff0000 ),
