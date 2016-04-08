@@ -15,7 +15,8 @@ function create(req, res, next) {
       user.moments.push({
         title: req.body.title,
         text: req.body.text,
-        images: req.body.images
+        images: req.body.images,
+        constellation: req.body.constellation
       })
       user.save(function(err, response) {
         console.log("successfully saved", response)

@@ -8,7 +8,8 @@ var Moments = new mongoose.Schema({
   slug: String,
   images: [{type: String}],
   isPublished: {type: Boolean, default: false},
-  publishedAt: {type: Date}
+  publishedAt: {type: Date},
+  constellation: []
 });
 
 
