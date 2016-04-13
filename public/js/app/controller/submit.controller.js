@@ -27,7 +27,6 @@
       password_confirmation: ""
     };
     vm.submitSignUp = submitSignUp;
-    vm.submitSignOut = submitSignOut;
 
     //FUNCTIONS
     function submitSignUp() {
@@ -64,11 +63,6 @@
             if (err.status === 403) vm.conflict = "passwordError";
           }
         );
-    }
-
-    function submitSignOut() {
-      authService.logOut();
-      $state.go('landing');
     }
 
   }
