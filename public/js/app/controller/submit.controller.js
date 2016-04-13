@@ -12,7 +12,7 @@
     $log.debug("SubmitController Loaded.");
     vm.toggleValue = true;
     vm.conflict;
-    const TOKEN_KEY = "moment_token"
+    var TOKEN_KEY = "moment_token"
 
     //BINDINGS
     vm.testExistingUser = {
