@@ -15,28 +15,29 @@
     var TOKEN_KEY = "moment_token"
 
     //BINDINGS
-    vm.testExistingUser = {
-      email: "tim@email.com",
-      password: "123"
+    vm.ExistingUser = {
+      email: "",
+      password: ""
     };
     vm.submitSignIn = submitSignIn;
-    vm.testNewUser = {
-      email: "tim@email.com",
-      name: "teembo",
-      password: "123",
-      password_confirmation: "123"
+    vm.NewUser = {
+      email: "",
+      name: "",
+      password: "",
+      password_confirmation: ""
     };
     vm.submitSignUp = submitSignUp;
+    vm.submitSignOut = submitSignOut;
 
     //FUNCTIONS
     function submitSignUp() {
       $log.info("Signing Up: ");
 
       userService
-      .create(vm.testNewUser)
+      .create(vm.NewUser)
       .then(function(res) {
         $log.info("success!", res.data)
-        return authService.logIn(vm.testNewUser)
+        return authService.logIn(vm.NewUser)
       })
       .then(
         function(decodedToken) {
@@ -53,7 +54,7 @@
       $log.info("Logging In:");
 
       authService
-        .logIn(vm.testExistingUser)
+        .logIn(vm.ExistingUser)
         .then(
           function(decodedToken) {
             $log.info("success!", decodedToken);
@@ -63,6 +64,11 @@
             if (err.status === 403) vm.conflict = "passwordError";
           }
         );
+    }
+
+    function submitSignOut() {
+      authService.logOut();
+      $state.go('landing');
     }
 
   }
