@@ -8,7 +8,7 @@
   MomentController.$inject = ["$log", "$http", "$state", "$window", "tokenService", "$rootScope"];
 
   function MomentController($log, $http, $state, $window, token, $rootScope) {
-    $log.debug('MomentController Loaded.')
+    $log.debug("moment controller loaded")
     //variables
     var vm = this;
     vm.moments;
@@ -56,7 +56,6 @@
         data: data
       })
       .then(function(res) {
-        $log.debug(res.data)
         renderMoment('', res.data._id, res.data.moment)
       })
     };
@@ -153,7 +152,6 @@
   //G.b FUNCTION CALLS
   function startConstellation() {
     if ($state.is("moment.create")) {
-      $log.debug("in create")
       scene.remove(cube)
       createPartitions(numPartitions);
       createRings(numRings);
@@ -163,24 +161,15 @@
       cube = new THREE.Mesh( geometry, material );
       scene.add( cube );
       requestAnimationFrame(render);
-      $log.debug("FIRED")
     } else {
       scene.remove(cube)
-      $log.debug("your div state:", document.getElementById("momentum"))
-      $log.debug("in current state:", $state)
-      $log.debug("heres your scene:", scene)
-      $log.info("heres your selected...", vm.selectedMoment, vm.selectedMoment.constellation, vm.selectedMoment.constellation.length, vm.selectedMoment.constellation.length > 0)
       if (vm.selectedMoment.constellation.length > 0) {
-        $log.debug("should be true", vm.selectedMoment.constellation.length > 0)
-        $log.debug("should be true", renderer.domElement)
         chosenMoment = [];
         createVertices(vm.selectedMoment.constellation )
         geometry = new THREE.ConvexGeometry( chosenMoment );
         cube = new THREE.Mesh( geometry, material );
         scene.add( cube );
-        $log.debug("heres your scene:", scene)
         requestAnimationFrame(render);
-        $log.debug("FIRED")
       }
     }
   }
@@ -265,11 +254,9 @@
       if (scene.children[0] !== undefined) {
         requestAnimationFrame(render);
         if ($state.is("moment.create")) {
-          $log.debug("should not be coming in here unless creating")
           update(vm.testVal)
         }
         renderer.render( scene, camera );
-        $log.debug("your renderer", renderer);
 
         if (document.getElementsByTagName("canvas") !== undefined && ($state.is('moment.create') || $state.is('moment.show'))) {
           document.getElementById("momentum").appendChild( renderer.domElement)
@@ -281,14 +268,13 @@
     };
 
     function update(a) {
-      $log.debug("NOOOO")
       if (a === true && vm.keyEvent !== 8) {
         vm.testVal = false;
         var someVal         = rng(4,0),
-            currentRotationY = scene.children[0].rotation.y;
+            currentRotationY = scene.children[0].rotation.y,
+            currentPosition  = scene.children[0].position;
             // currentRotationX = scene.children[0].rotation.x;
         scene.remove(cube);
-        $log.info(scene.children)
 
         for (var i = 0; i < 1; i++) {
           var constellationX = rng(momentPoles[1], momentPoles[0]);
@@ -302,10 +288,11 @@
         }
 
         geometry        = new THREE.ConvexGeometry( vm.newMoment.constellation );
-        material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, vertexColors: THREE.FaceColors } );
+        material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, vertexColors: THREE.FaceColors, opacity: 0.7 } );
         cube            = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotationY;
+        scene.children[0].position.set(currentPosition);
         // scene.children[0].rotation.x = currentRotationX;
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
@@ -317,14 +304,18 @@
       } else if (a === true && vm.keyEvent === 8 && vm.newMoment.constellation.length > 4) {
         vm.testVal  = false;
         vm.keyEvent = '';
-        var currentRotation = scene.children[0].rotation.y;
+        var currentRotation = scene.children[0].rotation.y,
+            currentPosition  = scene.children[0].position;
+
         scene.remove(cube);
         vm.newMoment.constellation.splice(vm.newMoment.constellation.length - 1, 1);
         geometry = new THREE.ConvexGeometry( vm.newMoment.constellation );
-        material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, vertexColors: THREE.FaceColors } );
+        material = new THREE.MeshBasicMaterial( { color: 0xff0000, vertexColors: new THREE.Color( 0xffffff ), opacity: 0.7 } );
         cube     = new THREE.Mesh( geometry, material );
         scene.add( cube );
         scene.children[0].rotation.y = currentRotation;
+        scene.children[0].position.set(currentPosition);
+
         scene.children[0].geometry.faces.forEach(function(face) {
           face.vertexColors.push(
             new THREE.Color( 0xff0000 ),
@@ -334,25 +325,17 @@
         })
       } else {
         vm.testVal = false;
-       $log.debug("coming in here because this is not moment.create")
       }
     };
 
 
     $rootScope.$on("$viewContentLoaded", function(event, toState) {
      if ($state.is('moment.create') || $state.is('moment.show')) {
-      $log.debug("BEFORE", scene)
       scene.remove(cube);
-      $log.debug("BEFORE", scene)
-      $log.debug("YOUR ARRAYS", vm.selectedMoment, vm.newMoment)
       startConstellation();
      } else if ($state.is('moment')) {
       grabMoments();
-      $log.debug("BEFORE", scene)
-      $log.debug("YOUR ARRAYS", vm.selectedMoment, vm.newMoment)
-      $log.debug("renderer info", renderer.info)
       scene.remove(cube);
-      $log.debug("AFTER", scene)
      }
     })
   };
