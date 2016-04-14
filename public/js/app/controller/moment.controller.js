@@ -72,9 +72,11 @@
         };
         vm.selectedMoment = vm.moments[index];
         transition('.show', {"id": vm.selectedMoment._id});
+
       }  else {
         vm.selectedMoment = data
         transition('.show', {"id": redirect});
+
       }
     }
 
@@ -151,7 +153,8 @@
   //G.b FUNCTION CALLS
   function startConstellation() {
     if ($state.is("moment.create")) {
-      scene.remove(scene.children[0])
+      $log.debug("in create")
+      scene.remove(cube)
       createPartitions(numPartitions);
       createRings(numRings);
       createConstellation(numBodies);
@@ -160,14 +163,25 @@
       cube = new THREE.Mesh( geometry, material );
       scene.add( cube );
       requestAnimationFrame(render);
+      $log.debug("FIRED")
     } else {
-      scene.remove(scene.children[0])
-      $log.info(scene.children)
-      createVertices(vm.selectedMoment.constellation )
-      geometry = new THREE.ConvexGeometry( chosenMoment );
-      cube = new THREE.Mesh( geometry, material );
-      scene.add( cube );
-      requestAnimationFrame(render);
+      scene.remove(cube)
+      $log.debug("your div state:", document.getElementById("momentum"))
+      $log.debug("in current state:", $state)
+      $log.debug("heres your scene:", scene)
+      $log.info("heres your selected...", vm.selectedMoment, vm.selectedMoment.constellation, vm.selectedMoment.constellation.length, vm.selectedMoment.constellation.length > 0)
+      if (vm.selectedMoment.constellation.length > 0) {
+        $log.debug("should be true", vm.selectedMoment.constellation.length > 0)
+        $log.debug("should be true", renderer.domElement)
+        chosenMoment = [];
+        createVertices(vm.selectedMoment.constellation )
+        geometry = new THREE.ConvexGeometry( chosenMoment );
+        cube = new THREE.Mesh( geometry, material );
+        scene.add( cube );
+        $log.debug("heres your scene:", scene)
+        requestAnimationFrame(render);
+        $log.debug("FIRED")
+      }
     }
   }
 
@@ -248,24 +262,32 @@
     };
 
     function render() {
-      requestAnimationFrame(render);
-      update(vm.testVal)
-      renderer.render( scene, camera );
-      if (document.getElementsByTagName("canvas") !== undefined) {
-        document.getElementById("momentum").appendChild( renderer.domElement)
+      if (scene.children[0] !== undefined) {
+        requestAnimationFrame(render);
+        if ($state.is("moment.create")) {
+          $log.debug("should not be coming in here unless creating")
+          update(vm.testVal)
+        }
+        renderer.render( scene, camera );
+        $log.debug("your renderer", renderer);
+
+        if (document.getElementsByTagName("canvas") !== undefined && ($state.is('moment.create') || $state.is('moment.show'))) {
+          document.getElementById("momentum").appendChild( renderer.domElement)
+          scene.children[0].rotation.y += 0.005;
+          scene.children[0].position.set( -200, 0 , 0);
+        }
       }
-      scene.children[0].rotation.y += 0.005;
-      scene.children[0].position.set( -200, 0 , 0);
       // scene.children[0].rotation.x += 0.00;
     };
 
     function update(a) {
+      $log.debug("NOOOO")
       if (a === true && vm.keyEvent !== 8) {
         vm.testVal = false;
         var someVal         = rng(4,0),
             currentRotationY = scene.children[0].rotation.y;
             // currentRotationX = scene.children[0].rotation.x;
-        scene.remove(scene.children[0]);
+        scene.remove(cube);
         $log.info(scene.children)
 
         for (var i = 0; i < 1; i++) {
@@ -296,7 +318,7 @@
         vm.testVal  = false;
         vm.keyEvent = '';
         var currentRotation = scene.children[0].rotation.y;
-        scene.remove(scene.children[0]);
+        scene.remove(cube);
         vm.newMoment.constellation.splice(vm.newMoment.constellation.length - 1, 1);
         geometry = new THREE.ConvexGeometry( vm.newMoment.constellation );
         material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, vertexColors: THREE.FaceColors } );
@@ -312,12 +334,25 @@
         })
       } else {
         vm.testVal = false;
+       $log.debug("coming in here because this is not moment.create")
       }
     };
+
+
     $rootScope.$on("$viewContentLoaded", function(event, toState) {
-      grabMoments();
      if ($state.is('moment.create') || $state.is('moment.show')) {
+      $log.debug("BEFORE", scene)
+      scene.remove(cube);
+      $log.debug("BEFORE", scene)
+      $log.debug("YOUR ARRAYS", vm.selectedMoment, vm.newMoment)
       startConstellation();
+     } else if ($state.is('moment')) {
+      grabMoments();
+      $log.debug("BEFORE", scene)
+      $log.debug("YOUR ARRAYS", vm.selectedMoment, vm.newMoment)
+      $log.debug("renderer info", renderer.info)
+      scene.remove(cube);
+      $log.debug("AFTER", scene)
      }
     })
   };

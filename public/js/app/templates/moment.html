@@ -7,7 +7,7 @@
   <div ng-if="'moment' | isState" ng-repeat="moment in vm.moments">
 
     <div ng-click="vm.renderMoment($index);" class="sign-in-card hoverable z-depth-3 col m3">
-      <strong><h4>Title:{{moment.title}}</h4></strong><p>{{moment.createdAt}}</p>
+      <strong><h4>{{moment.title}}</h4></strong><p>{{moment.createdAt.toString().slice(4, 15)}}</p>
     </div>
   </div>
 </div>

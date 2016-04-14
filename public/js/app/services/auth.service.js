@@ -45,9 +45,6 @@
         delete tokenData.exp;
         delete tokenData.iat;
       }
-
-      $log.debug("Current user retrieved:", tokenData);
-
       return tokenData;
     }
 
