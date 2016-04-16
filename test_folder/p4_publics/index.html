@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <title>Auth App</title>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+  <!-- If you must use outside libs that aren't Angular-specific, include them BEFORE Angular. -->
+  <script src="/js/vendor/jwt-decode.2.0.1.js"></script>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+
+</head>
+<body>
+  <div class="container-fluid">
+    <header ng-controller="NavbarController as vm">
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <a ui-sref="welcome" class="navbar-brand"><img src="/images/token-symbol.png" width="40" height="40"></a>
+          <div class="pull-right">
+            <button ng-show="vm.authService.isLoggedIn();" ui-sref="profile" type="button" class="btn btn-default navbar-btn"><i class="glyphicon glyphicon-cog"></i> Profile</button>
+            <button ng-hide="vm.authService.isLoggedIn();" ui-sref="signin" type="button" class="btn btn-default navbar-btn navbar-right">Sign in</button>
+            <button ng-click="vm.logOut();" ng-show="vm.authService.isLoggedIn()" type="button" class="btn btn-default navbar-btn navbar-right">Sign out</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="content" ui-view>
+      <!-- ui-router (aka ui.router) inserts templates here -->
+    </main>
+  </div> <!-- div.container-fluid -->
+
+  <footer>
+    <hr>
+    <span>Made with <i class="glyphicon glyphicon-star"></i> in DTLA.</span>
+    <br>
+    <span>© 2016, WDI</span>
+  </footer>
+
+  <script src="/js/app/app.module.js"></script>
+  <script src="/js/app/config/app.debug.js"></script>
+  <script src="/js/app/config/app.httpInterceptors.js"></script>
+  <script src="/js/app/config/app.routes.js"></script>
+  <script src="/js/app/config/jsonHeaders.service.js"></script>
+  <script src="/js/app/config/tokenSigning.service.js"></script>
+  <script src="/js/app/config/authErrorRedirect.service.js"></script>
+  <script src="/js/app/layouts/navbar.controller.js"></script>
+  <script src="/js/app/auth/token.service.js"></script>
+  <script src="/js/app/auth/auth.service.js"></script>
+  <script src="/js/app/auth/signin.controller.js"></script>
+  <script src="/js/app/users/user.service.js"></script>
+  <script src="/js/app/users/profile.controller.js"></script>
+</body>
+</html>
