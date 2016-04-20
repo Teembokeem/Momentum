@@ -6,20 +6,16 @@
           <div class="row">
             <form ng-submit="vm.submitSignUp();" class="col s12">
               <div class=" col s12">
-                <input ng-model="vm.NewUser.email" id="email" type="email" class="validate">
-                <label for="email" data-error="wrong" data-success="right">Email</label>
+                <input ng-model="vm.NewUser.email" placeholder="Email" id="email" type="email" class="validate">
               </div>
               <div class=" col s12">
-                <input ng-model="vm.NewUser.name" id="Name" type="text" class="validate">
-                <label for="Name" data-error="wrong" data-success="right">Name</label>
+                <input ng-model="vm.NewUser.name" placeholder="Name" id="Name" type="text" class="validate">
               </div>
               <div class=" col s12">
-                <input ng-model="vm.NewUser.password" id="password" type="password" class="validate">
-                <label for="password" data-error="wrong" data-success="right">Password</label>
+                <input ng-model="vm.NewUser.password" placeholder="Password" id="password" type="password" class="validate">
               </div>
               <div class=" col s12">
-                <input ng-model="vm.NewUser.password_confirmation"  id="password_cofirmation" type="password" class="validate">
-                <label for="password_cofirmation" data-error="wrong" data-success="right">Confirm Your Password</label>
+                <input ng-model="vm.NewUser.password_confirmation"  placeholder="Confirm your password" id="password_cofirmation" type="password" class="validate">
               </div>
               <span  ng-show="vm.conflict ==='emailError'" ><label  class="conflict">"{{vm.NewUser.email}}" already exists in the database, Please enter a new email, or <u ui-sref="submit.signin">Sign In Here</u></label></span>
               <div class="col s12 btn-holder">

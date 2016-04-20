@@ -31,10 +31,9 @@
 <body>
 
   <nav class="grey darken-3" ng-controller="NavController as vm">
-    <a ui-sref="submit.signin" ng-hide="vm.authService.isLoggedIn();" class="waves-effect waves-light right btn black">S I G N I N</a>
     <a ui-sref="landing" class="waves-effect waves-light left btn black">H O M E</a>
     <a ng-click="vm.submitSignOut();" ng-show="vm.authService.isLoggedIn();" class="waves-effect waves-light right btn black">S I G N O U T</a>
-    <a class="waves-effect waves-light center-align btn black"> Hello {{vm.authService.isLoggedIn() ? vm.authService.currentUser().name : "user"}}</a>
+    <p class="hello-user"> Hello {{vm.authService.isLoggedIn() ? vm.authService.currentUser().name : "user"}}</p>
   </nav>
 
   <div class="row">

@@ -1,17 +1,16 @@
  <div class="row">
    <div class="col m6 offset-m3">
-     <div class="landing-card hoverable z-depth-3">
-       <div class="card transparent">
-         <div class="card-content">
-           <span class="card-title">L A N D I N G</span>
-           <p>I am a very simple card. I am good at containing small bits of information.
-           I am convenient because I require little markup to use effectively.</p>
-         </div>
-         <div class="card-action">
-           <a href="#">This is a link</a>
-           <a href="#">This is a link</a>
-         </div>
-       </div>
+     <div class="card-content landing-card">
+       <p>Momentum is a blogging platform, visually designed to
+         turn your content and pictures into something memorable. We
+         take a post's data to visualize each moment you record as a
+         unique crystal; no two crystals are the same. It's built on
+         the idea that our experiences mean more to us than a 140
+         character tweet or a thousand likes.
+       </p>
      </div>
+   </div>
+   <div class="col m6 offset-m3 sign-in">
+     <a ui-sref="submit.signin" ng-hide="vm.authService.isLoggedIn();" class="waves-effect waves-light right btn black">S I G N I N</a>
    </div>
  </div>
