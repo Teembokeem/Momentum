@@ -332,6 +332,15 @@
     $rootScope.$on("$viewContentLoaded", function(event, toState) {
      if ($state.is('moment.create') || $state.is('moment.show')) {
       scene.remove(cube);
+      partitionParams = [];
+      constellation = [];
+      vm.newMoment = {
+      title: "",
+      text: "",
+      images: [],
+      date: "",
+      constellation: []
+      }
       startConstellation();
      } else if ($state.is('moment')) {
       grabMoments();

@@ -151,3 +151,7 @@ a, .btn, .hello-user {
   left: 0;
   top: 3em;
 }
+
+canvas {
+  background-color: white;
+}
