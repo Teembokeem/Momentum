@@ -1,7 +1,6 @@
 var _ = require('lodash');
 
 var localEnvVars = {
-
   TITLE:          'Momentum',
   SAFE_TITLE:     'momentum',
   COOKIE_SECRET:  'notsosecretnowareyou',

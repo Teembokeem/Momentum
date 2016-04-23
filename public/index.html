@@ -14,11 +14,9 @@
   <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
 
 
-  <!-- THREEJSMODELING -->
+  <!-- THREEJS MODELING -->
   <script src="//brangerbriz.net/labs/threejs_playGnd/js/three.min.js"></script>
   <script src="//brangerbriz.net/labs/threejs_playGnd/js/Detector.js"></script>
-  <script src="/js/vendor/edgesHelper.js"></script>
-  <script src="/js/vendor/trackballControls.js"></script>
 
 
   <!-- ANGULAR SCRIPTS -->
@@ -29,7 +27,6 @@
 
 </head>
 <body>
-
   <nav class="grey darken-3" ng-controller="NavController as vm">
     <a ui-sref="landing" class="waves-effect waves-light left btn black">H O M E</a>
     <a ng-click="vm.submitSignOut();" ng-show="vm.authService.isLoggedIn();" class="waves-effect waves-light right btn black">S I G N O U T</a>
@@ -43,7 +40,6 @@
   </div>
 
   <main ui-view>
-
   </main>
 
   <script src="/js/app/app.module.js"></script>
