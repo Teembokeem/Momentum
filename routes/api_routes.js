@@ -2,25 +2,24 @@ var express = require('express'),
     router  = new express.Router();
 
 // Require controllers.
-var usersCtrl = require('../controllers/users');
-var MomentController = require('../controllers/moments');
+var UsersController = require('../controllers/users'),
+    MomentController = require('../controllers/moments');
 
 // Require token authentication.
 var token = require('../config/token_auth');
 
 // users resource paths:
-router.post('/users',    usersCtrl.create);
-router.get( '/users/me', token.authenticate, usersCtrl.me);
-router.put( '/users/me', token.authenticate, usersCtrl.update);
+router.get( '/users/me', token.authenticate, UsersController.me);
+router.post('/users',    UsersController.create);
+router.put( '/users/me', token.authenticate, UsersController.update);
 
 // token auth
-router.post('/token', token.create);
+router.post('/token',          token.create);
 router.post('/users/me/token', token.authenticate, token.refresh);
 
 // moment paths:
-router.get('/moments', token.authenticate, MomentController.index);
-router.post('/moments', token.authenticate, MomentController.create);
+router.get('/moments',     token.authenticate, MomentController.index);
+router.post('/moments',    token.authenticate, MomentController.create);
 router.put('/moments/:id', token.authenticate, MomentController.put);
-router.delete('/moments/:id', token.authenticate, MomentController.delete);
 
 module.exports = router;
