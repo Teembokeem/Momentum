@@ -18,28 +18,27 @@
     vm.accumulator = 0;
     vm.imageNum = 0;
     vm.momentTemplate = {
-      title: "",
-      text: "",
+      title:  "",
+      text:   "",
       images: "",
-      date: ""
+      date:   ""
     }
     vm.newMoment = {
-      title: "",
-      text: "",
+      title:  "",
+      text:   "",
       images: [],
-      date: ""
+      date:   ""
     }
 
     //bindings
     vm.transition   = transition;
-    vm.updateArray = updateArray;
+    vm.updateArray  = updateArray;
     vm.submitMoment = submitMoment;
     vm.renderMoment = renderMoment;
     vm.updateMoment = updateMoment;
 
 
     //HELPERS
-
     function transition(state, data) {
       $state.go("moment" + state, data)
     };
@@ -52,8 +51,8 @@
     function submitMoment(data) {
       $http({
         method: 'POST',
-        url: "api/moments",
-        data: data
+        url:    "api/moments",
+        data:   data
       })
       .then(function(res) {
         renderMoment('', res.data._id, res.data.moment)
@@ -63,21 +62,19 @@
     function renderMoment(index, redirect, data) {
       if (index !== '') {
         vm.momentTemplate = {
-          title:  vm.moments[index].title,
-          text:   vm.moments[index].text,
-          images: vm.moments[index].images,
-          date:   vm.moments[index].createdAt,
+          title:         vm.moments[index].title,
+          text:          vm.moments[index].text,
+          images:        vm.moments[index].images,
+          date:          vm.moments[index].createdAt,
           constellation: vm.moments[index].constellation
         };
         vm.selectedMoment = vm.moments[index];
         transition('.show', {"id": vm.selectedMoment._id});
-
       }  else {
         vm.selectedMoment = data
         transition('.show', {"id": redirect});
-
       }
-    }
+    };
 
     function updateMoment() {
       $http({
@@ -88,7 +85,9 @@
       .then(
         function(res) {
           vm.showForm = !vm.showForm;
-        }, function(err) {
+        },
+        function(err) {
+          $log.debug("Error Detected: ", err)
         }
       );
     }
@@ -107,6 +106,7 @@
           });
         },
         function(err) {
+          $log.debug("Error Detected: ", err);
         });
       return promise;
     };
@@ -121,88 +121,88 @@
 
 //VARIABLES FOR CRYSTAL SYNTHESIS
   //A. DEFINE CRYSTAL APEX AND NADIR
-  var momentApexNadir = [ 200, -200 ],
-      momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1]),
+    var momentApexNadir = [ 200, -200 ],
+        momentRange     = momentApexNadir[0] + Math.abs(momentApexNadir[1]),
 
   //B. DEFINE LATERAL POLES
-      momentPoles     = [ 0,  50 ],
-      momentGirth     = momentPoles[1] - momentPoles[0],
+        momentPoles     = [ 0,  50 ],
+        momentGirth     = momentPoles[1] - momentPoles[0],
   //C.a Partition vars
-      numPartitions   = rng(10,0),
-      partitionParams = [],
-      partitionRange,
+        numPartitions   = rng(10,0),
+        partitionParams = [],
+        partitionRange,
   //D.a Ring vars
-      numRings        = rng(10, 0),
-      ringParams      = [],
+        numRings        = rng(10, 0),
+        ringParams      = [],
   //E.a Constellation vars
-      numBodies       = 0,
-      constellation   = [],
-      quadrantArray   = [1, 1, -1, -1],
+        numBodies       = 0,
+        constellation   = [],
+        quadrantArray   = [1, 1, -1, -1],
   //G.a Geometry vars
-      geometry,
-      chosenMoment    = [],
-      cube,
-      material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
+        geometry,
+        chosenMoment    = [],
+        cube,
+        material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
   //F.a THREE.js vars
-      vm.newMoment.constellation = [];
+        vm.newMoment.constellation = [];
 
 
 //MOMENT CREATION
 
   //G.b FUNCTION CALLS
-  function startConstellation() {
-    if ($state.is("moment.create")) {
-      scene.remove(cube)
-      createPartitions(numPartitions);
-      createRings(numRings);
-      createConstellation(numBodies);
-      createVertices(constellation);
-      geometry = new THREE.ConvexGeometry( vm.newMoment.constellation );
-      cube = new THREE.Mesh( geometry, material );
-      scene.add( cube );
-      requestAnimationFrame(render);
-    } else {
-      scene.remove(cube)
-      if (vm.selectedMoment.constellation.length > 0) {
-        chosenMoment = [];
-        createVertices(vm.selectedMoment.constellation )
-        geometry = new THREE.ConvexGeometry( chosenMoment );
+    function startConstellation() {
+      if ($state.is("moment.create")) {
+        scene.remove(cube)
+        createPartitions(numPartitions);
+        createRings(numRings);
+        createConstellation(numBodies);
+        createVertices(constellation);
+        geometry = new THREE.ConvexGeometry( vm.newMoment.constellation );
         cube = new THREE.Mesh( geometry, material );
         scene.add( cube );
         requestAnimationFrame(render);
+      } else {
+        scene.remove(cube)
+        if (vm.selectedMoment.constellation.length > 0) {
+          chosenMoment = [];
+          createVertices(vm.selectedMoment.constellation )
+          geometry = new THREE.ConvexGeometry( chosenMoment );
+          cube = new THREE.Mesh( geometry, material );
+          scene.add( cube );
+          requestAnimationFrame(render);
+        }
       }
     }
-  }
 
 
   //C.b DEFINE PARTITIONS
-  function createPartitions(n) {
-    for ( var i = 0; i < n + 1; i++ ) {
-      partitionParams.push(
-        [
-          momentApexNadir[1] + ( i * (momentRange / ( n + 1 )) ),
-          momentApexNadir[1] + ( (i + 1) * (momentRange / ( n + 1 )) )
-        ]
-      )
+    function createPartitions(n) {
+      for ( var i = 0; i < n + 1; i++ ) {
+        partitionParams.push(
+          [
+            momentApexNadir[1] + ( i * (momentRange / ( n + 1 )) ),
+            momentApexNadir[1] + ( (i + 1) * (momentRange / ( n + 1 )) )
+          ]
+        )
+      };
+      partitionRange = partitionParams[0][1] - partitionParams[0][0];
     };
-    partitionRange = partitionParams[0][1] - partitionParams[0][0];
-  };
 
   //D.b DEFINE RINGS
-  function createRings(n) {
-    for ( var i = 0; i < n + 1; i++ ) {
-      ringParams.push(
-        [
-          momentPoles[0] + (i * (momentGirth / ( n+1 ))),
-          momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 )))
-        ],
-        [
-          -(momentPoles[0] + (i * (momentGirth / ( n+1 )))),
-          -(momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 ))))
-        ]
-      )
+    function createRings(n) {
+      for ( var i = 0; i < n + 1; i++ ) {
+        ringParams.push(
+          [
+            momentPoles[0] + (i * (momentGirth / ( n+1 ))),
+            momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 )))
+          ],
+          [
+            -(momentPoles[0] + (i * (momentGirth / ( n+1 )))),
+            -(momentPoles[0] + ((i + 1) * (momentGirth / ( n+1 ))))
+          ]
+        )
+      };
     };
-  };
 
   //E.b SYNTHESIZE CONSTELLATION SET
     function createConstellation(n) {
@@ -264,65 +264,46 @@
           scene.children[0].position.set( -200, 0 , 0);
         }
       }
-      // scene.children[0].rotation.x += 0.00;
     };
+
+    function createScene(a) {
+      vm.testVal = false;
+      vm.keyEvent = '';
+      var currentRotationY = scene.children[0].rotation.y,
+          currentPosition  = scene.children[0].position;
+          // currentRotationX = scene.children[0].rotation.x;
+      scene.remove(cube);
+      geometry = new THREE.ConvexGeometry(a);
+      material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true, vertexColors: new THREE.Color( 0xffffff ), opacity: 0.7 } );
+      cube     = new THREE.Mesh( geometry, material );
+      scene.add( cube );
+      scene.children[0].rotation.y = currentRotationY;
+      scene.children[0].position.set(currentPosition);
+
+      scene.children[0].geometry.faces.forEach(function(face) {
+        face.vertexColors.push(
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 ),
+          new THREE.Color( 0xff0000 )
+        )
+      })
+    }
 
     function update(a) {
       if (a === true && vm.keyEvent !== 8) {
-        vm.testVal = false;
-        var someVal         = rng(4,0),
-            currentRotationY = scene.children[0].rotation.y,
-            currentPosition  = scene.children[0].position;
-            // currentRotationX = scene.children[0].rotation.x;
-        scene.remove(cube);
-
+        var someVal = rng(4,0);
         for (var i = 0; i < 1; i++) {
           var constellationX = rng(momentPoles[1], momentPoles[0]);
-          vm.newMoment.constellation.push(
-            new THREE.Vector3(
+          vm.newMoment.constellation.push(new THREE.Vector3(
               quadrantArray[someVal % 4] *         rng(momentPoles[1], momentPoles[0]),
               quadrantArray[((someVal % 2) + 1)] * rng(momentApexNadir[1], momentApexNadir[0]),
               quadrantArray[((someVal % 2) + 1)] * Math.pow((Math.pow(momentPoles[1], 2) - Math.pow(constellationX, 2)) , 0.5)
-            )
-          )
+          ))
         }
-
-        geometry        = new THREE.ConvexGeometry( vm.newMoment.constellation );
-        material        = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, vertexColors: THREE.FaceColors, opacity: 0.7 } );
-        cube            = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-        scene.children[0].rotation.y = currentRotationY;
-        scene.children[0].position.set(currentPosition);
-        // scene.children[0].rotation.x = currentRotationX;
-        scene.children[0].geometry.faces.forEach(function(face) {
-          face.vertexColors.push(
-            new THREE.Color( 0xff0000 ),
-            new THREE.Color( 0xff0000 ),
-            new THREE.Color( 0xff0000 )
-          )
-        })
+        createScene(vm.newMoment.constellation);
       } else if (a === true && vm.keyEvent === 8 && vm.newMoment.constellation.length > 4) {
-        vm.testVal  = false;
-        vm.keyEvent = '';
-        var currentRotation = scene.children[0].rotation.y,
-            currentPosition  = scene.children[0].position;
-
-        scene.remove(cube);
         vm.newMoment.constellation.splice(vm.newMoment.constellation.length - 1, 1);
-        geometry = new THREE.ConvexGeometry( vm.newMoment.constellation );
-        material = new THREE.MeshBasicMaterial( { color: 0xff0000, vertexColors: new THREE.Color( 0xffffff ), opacity: 0.7 } );
-        cube     = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-        scene.children[0].rotation.y = currentRotation;
-        scene.children[0].position.set(currentPosition);
-
-        scene.children[0].geometry.faces.forEach(function(face) {
-          face.vertexColors.push(
-            new THREE.Color( 0xff0000 ),
-            new THREE.Color( 0xff0000 ),
-            new THREE.Color( 0xff0000 )
-          )
-        })
+        createScene(vm.newMoment.constellation);
       } else {
         vm.testVal = false;
       }
